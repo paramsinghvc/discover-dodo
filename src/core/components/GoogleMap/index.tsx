@@ -11,7 +11,7 @@ import mapStyle from "./mapStyle";
 import { foundData, lostData } from "./data";
 import { Paper } from "@material-ui/core";
 
-const DEFAULT_ZOOM = 10;
+const DEFAULT_ZOOM = 12;
 
 type CoordinatesType = {
   lat: number;
