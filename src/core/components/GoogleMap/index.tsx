@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   GoogleMap,
   withScriptjs,
@@ -10,7 +10,7 @@ import {
 
 import mapStyle from "./mapStyle";
 import { foundData, lostData } from "./data";
-import { Paper, Typography } from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 
 const DEFAULT_ZOOM = 10;
 
@@ -35,7 +35,6 @@ export function Map(props: any) {
   }, []);
 
   const getPosition = useCallback(position => {
-    console.log("here");
     setCurrentLocation({
       lat: position.coords.latitude,
       lng: position.coords.longitude
