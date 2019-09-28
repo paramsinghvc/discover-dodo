@@ -29,7 +29,7 @@ const App: React.FC = () => {
               <Route exact path="/" component={ReportLost} />
               <Route exact path="/report" component={ReportLost} />
               <Route exact path="/map" component={MapView} />
-              <Route render={() => <Redirect to="/" />} />
+              {/* <Route render={() => <Redirect to="/" />} /> */}
             </Switch>
           </Router>
         </div>

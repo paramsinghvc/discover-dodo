@@ -4,10 +4,12 @@ import styled from "@emotion/styled";
 import MapComponent from "../../core/components/GoogleMap/index";
 
 const MapContainer = styled.div`
-  position: relative;
-  height: 600px;
-  width: 600px;
-  border: 1px red solid;
+  position: fixed;
+  top: 0px;
+  bottom: 10px;
+  right: 10px;
+  left: 10px;
+  padding-top: 75px;
 `;
 
 const MapView: FC<{}> = () => {

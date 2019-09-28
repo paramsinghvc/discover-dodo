@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable no-console */
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   GoogleMap,
   withScriptjs,
@@ -6,22 +7,54 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
-import mapStyle from "./mapStyle";
 
-import { data } from "./data";
+import mapStyle from "./mapStyle";
+import { foundData, lostData } from "./data";
+import { Paper, Typography } from "@material-ui/core";
 
 const DEFAULT_ZOOM = 10;
 
+type CoordinatesType = {
+  lat: number;
+  lng: number;
+};
+
 export function Map(props: any) {
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
+  const [currentLocation, setCurrentLocation] = useState<CoordinatesType>({
+    lat: 0,
+    lng: 0
+  });
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(getPosition);
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
+  const getPosition = useCallback(position => {
+    console.log("here");
+    setCurrentLocation({
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    });
+  }, []);
 
   return (
     <GoogleMap
       defaultZoom={DEFAULT_ZOOM}
-      defaultCenter={{ lat: 12.97, lng: 77.59 }}
-      defaultOptions={{ styles: mapStyle }}
+      center={currentLocation}
+      defaultOptions={{
+        styles: mapStyle,
+        fullscreenControl: false,
+        panControl: false,
+        streetViewControl: false,
+        mapTypeControl: false
+      }}
     >
-      {data.map(place => {
+      {foundData.map(place => {
         return (
           <Marker
             key={place.id}
@@ -39,6 +72,24 @@ export function Map(props: any) {
           />
         );
       })}
+      {lostData.map(place => {
+        return (
+          <Marker
+            key={place.id}
+            position={{
+              lat: place.coordinates[0],
+              lng: place.coordinates[1]
+            }}
+            onClick={() => {
+              setSelectedPlace(place);
+            }}
+            icon={{
+              url: "/pawprint-red.svg",
+              scaledSize: new (window as any).google.maps.Size(25, 25)
+            }}
+          />
+        );
+      })}
       {selectedPlace && (
         <InfoWindow
           position={{
@@ -48,8 +99,11 @@ export function Map(props: any) {
           onCloseClick={() => {
             setSelectedPlace(null);
           }}
+          options={{
+            style: { opacity: 0.2 }
+          }}
         >
-          <div>{selectedPlace.name}</div>
+          <Paper>Pet info goes here</Paper>
         </InfoWindow>
       )}
     </GoogleMap>
