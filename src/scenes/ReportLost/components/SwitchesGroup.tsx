@@ -3,6 +3,10 @@ import styled from "@emotion/styled";
 
 const Holder = styled.section`
   display: flex;
+  margin-top: 20px;
+  > * {
+    margin-right: 20px;
+  }
 `;
 
 const SwitchesGroup: FC<{}> = ({ children }) => {
