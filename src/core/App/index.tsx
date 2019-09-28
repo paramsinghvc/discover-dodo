@@ -6,6 +6,7 @@ import { createStoreContext } from "@mollycule/redux-hook";
 import logo from "assets/logo.svg";
 import "./App.scss";
 import AppBar from "../components/AppBar";
+import ContentHeadSection from "../components/ContentHead";
 import { theme } from "../theme";
 import createStore from "../utils/createStore";
 
@@ -18,6 +19,7 @@ const App: React.FC = () => {
       <ThemeProvider theme={theme}>
         <div className="App">
           <AppBar />
+          <ContentHeadSection />
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
             <Button variant="contained" color="primary">
