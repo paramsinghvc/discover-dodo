@@ -3,6 +3,7 @@ import { ReactConfigRenderer, IConfig } from "@mollycule/mason";
 import styled from "@emotion/styled";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
+import DownloadLink from "core/components/GeneratePdf/generatePdf";
 
 import FORM_CONFIG from "./reportLostFormConfig.json";
 import componentsMap from "./components";
@@ -51,6 +52,9 @@ const ReportLost: FC<{}> = () => {
         >
           Submit
         </Button>
+      </Box>
+      <Box mr={0} textAlign="right">
+        <DownloadLink />
       </Box>
     </Container>
   );
