@@ -38,8 +38,8 @@ const ReportLost: FC<{}> = () => {
   }
 
   useEffect(() => {
-    getFoo();
-    addEntry();
+    // getFoo();
+    // addEntry();
   }, []);
   return <p>Hola</p>;
 };

@@ -27,7 +27,7 @@ const App: React.FC = () => {
             <Switch>
               <Route exact path="/" component={ReportLost} />
               <Route exact path="/report" component={ReportLost} />
-              <Route render={() => <Redirect to="/" />} />
+              {/* <Route render={() => <Redirect to="/" />} /> */}
             </Switch>
           </Router>
         </div>

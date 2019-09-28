@@ -1,7 +1,7 @@
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 
-import { FIREBASE } from "../config";
+import { FIREBASE_CONFIG } from "../config";
 
 class ApiService {
   public db: firebase.firestore.Firestore;
@@ -11,11 +11,7 @@ class ApiService {
   }
 
   initFirebase() {
-    firebase.initializeApp({
-      apiKey: FIREBASE.API_KEY,
-      authDomain: FIREBASE.AUTH_DOMAIN,
-      projectId: FIREBASE.PROJECT_ID
-    });
+    firebase.initializeApp(FIREBASE_CONFIG);
   }
 
   public addDataToCollection = async (collectionName: string, data: any) => {
