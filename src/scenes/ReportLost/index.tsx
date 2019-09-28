@@ -1,47 +1,59 @@
-import React, { FC, useEffect } from "react";
-import * as firebase from "firebase/app";
+import React, { FC, useMemo, memo } from "react";
+import { ReactConfigRenderer, IConfig } from "@mollycule/mason";
+import styled from "@emotion/styled";
+import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
 
-import ApiService, { wrapOperation } from "shared/services/apiService";
-import safeGet from "shared/utils/safeGet";
+import FORM_CONFIG from "./reportLostFormConfig.json";
+import componentsMap from "./components";
+// import Typography from "@material-ui/core/Typography";
+
+const Container = styled.section`
+  display: grid;
+  width: auto;
+  margin: 50px auto;
+  max-width: 50%;
+  min-width: 400px;
+`;
+
+// import ApiService, { wrapOperation } from "shared/services/apiService";
+// import safeGet from "shared/utils/safeGet";
 
 const ReportLost: FC<{}> = () => {
-  async function getFoo() {
-    const { response, error } = await wrapOperation(ApiService.getCollection)(
-      "users"
-    );
-
-    if (response) {
-      const { docs } = response;
-      docs.forEach(document => console.warn(document.data()));
-    } else {
-      console.error("Oops", error);
-    }
-  }
-
-  async function addEntry() {
-    const postData = {
-      address: "905, HSR Layout, Bangalore",
-      location: new firebase.firestore.GeoPoint(1, 1),
-      name: "John Doe",
-      phone: "8296886955",
-      token: ""
-    };
-
-    const { response, error } = await wrapOperation(
-      ApiService.addDataToCollection
-    )("users", postData);
-    if (response) {
-      console.warn("Added", response);
-    } else {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    // getFoo();
-    // addEntry();
+  const formRenderer = useMemo(() => {
+    return new ReactConfigRenderer(FORM_CONFIG as IConfig, componentsMap, {
+      // initialValues: initialValuesMap,
+    });
   }, []);
-  return <p>Hola</p>;
+
+  const RenderedFormJSX = useMemo<React.ElementType>(
+    () => (formRenderer ? formRenderer.render() : () => <></>),
+    [formRenderer]
+  );
+
+  return (
+    <Container>
+      <RenderedFormJSX />
+      <Box mt={4} textAlign="right">
+        <Button
+          color="secondary"
+          size="large"
+          fullWidth={false}
+          className="right-margin-10"
+        >
+          Reset
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          fullWidth={false}
+        >
+          Submit
+        </Button>
+      </Box>
+    </Container>
+  );
 };
 
-export default ReportLost;
+export default memo(ReportLost);

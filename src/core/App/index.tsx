@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ThemeProvider } from "@material-ui/styles";
 import { createStoreContext } from "@mollycule/redux-hook";
 import {
@@ -13,11 +13,18 @@ import AppBar from "../components/AppBar";
 import { theme } from "../theme";
 import createStore from "../utils/createStore";
 import ReportLost from "scenes/ReportLost";
+import ApiService from "shared/services/apiService";
 
 const store = createStore();
 const { Provider } = createStoreContext<any>();
 
+ApiService.initFirebase();
+
 const App: React.FC = () => {
+  // useEffect(() => {
+
+  // }, []);
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>

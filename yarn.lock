@@ -1369,10 +1369,10 @@
     prop-types "^15.7.2"
     react-is "^16.8.6"
 
-"@mollycule/mason@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@mollycule/mason/-/mason-1.0.4.tgz#da32d437c2bbb625a39713bffb090e28d5e2bfd5"
-  integrity sha512-V7UUIbdUaDGVvv2yZy4B6lqusXGOqiJn3c4mYuzjtXtqRJWOxztcEiKNnHY7S4sSFxBPvUMie0m6iYxNeesMrA==
+"@mollycule/mason@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@mollycule/mason/-/mason-1.0.6.tgz#e42a8ffa0b6ff07d3a48ec1b90c05a5d1854d917"
+  integrity sha512-JGbCOZ0EyvHsmVAhMlT97j1nJmnvQQaEumqD8s4+CIZULrvr/t01EKBwbI0cvfmkki2moXt/h5lRWO67Njw8vw==
   dependencies:
     "@emotion/core" "^10.0.17"
     "@emotion/styled" "^10.0.17"

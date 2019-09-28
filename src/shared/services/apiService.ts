@@ -4,21 +4,24 @@ import "firebase/firestore";
 import { FIREBASE_CONFIG } from "../config";
 
 class ApiService {
-  public db: firebase.firestore.Firestore;
+  public db: firebase.firestore.Firestore | null;
   public constructor() {
-    this.initFirebase();
+    // this.initFirebase();
+    this.db = null;
+  }
+
+  public initFirebase() {
+    firebase.initializeApp(FIREBASE_CONFIG);
     this.db = firebase.firestore();
   }
 
-  initFirebase() {
-    firebase.initializeApp(FIREBASE_CONFIG);
-  }
-
   public addDataToCollection = async (collectionName: string, data: any) => {
+    if (!this.db) return;
     return await this.db.collection(collectionName).add(data);
   };
 
   public getCollection = async (collectionName: string) => {
+    if (!this.db) return;
     return await this.db.collection(collectionName).get();
   };
 }
