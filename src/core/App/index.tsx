@@ -3,7 +3,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import Button from "@material-ui/core/Button";
 import { createStoreContext } from "@mollycule/redux-hook";
 
-import logo from "src/assets/logo.svg";
+import logo from "assets/logo.svg";
 import "./App.scss";
 import AppBar from "../components/AppBar";
 import { theme } from "../theme";

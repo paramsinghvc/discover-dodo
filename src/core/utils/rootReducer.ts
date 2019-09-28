@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 
-import { IRootState } from "src/shared/types";
-import { appReducer } from "src/core/App/app.redux";
+import { IRootState } from "shared/types";
+import { appReducer } from "core/App/app.redux";
 
 const rootReducer = combineReducers<IRootState>({
   app: appReducer
