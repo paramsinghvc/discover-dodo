@@ -14,6 +14,7 @@ import { theme } from "../theme";
 import createStore from "../utils/createStore";
 import ReportLost from "scenes/ReportLost";
 import ApiService from "shared/services/apiService";
+import MapView from "scenes/MapView";
 
 const store = createStore();
 const { Provider } = createStoreContext<any>();
@@ -32,8 +33,9 @@ const App: React.FC = () => {
           <AppBar />
           <Router>
             <Switch>
-              <Route exact path="/" component={ReportLost} />
+              <Route exact path="/" component={MapView} />
               <Route exact path="/report" component={ReportLost} />
+              <Route exact path="/map" component={MapView} />
               {/* <Route render={() => <Redirect to="/" />} /> */}
             </Switch>
           </Router>
