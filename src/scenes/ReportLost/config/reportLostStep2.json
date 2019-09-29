@@ -51,7 +51,6 @@
                     "label": "Pet Info",
                     "variant": "outlined",
                     "fullWidth": true,
-                    "autoFocus": true,
                     "margin": "normal",
                     "value": "",
                     "multiline": true,

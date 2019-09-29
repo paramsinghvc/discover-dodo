@@ -33,6 +33,24 @@
                 }
             },
             {
+                "id": "petGender",
+                "type": "RADIO_GROUP",
+                "meta": {
+                    "datasource": [
+                        "Male",
+                        "Female"
+                    ],
+                    "label": "Gender",
+                    "row": true,
+                    "value": "Male"
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
                 "id": "petSpecies",
                 "type": "RADIO_GROUP",
                 "meta": {
