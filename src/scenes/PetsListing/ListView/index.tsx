@@ -12,6 +12,7 @@ import PlaceholderImg from "assets/placeholder.png";
 
 import "./index.scss";
 import safeGet from "shared/utils/safeGet";
+import { Link } from "react-router-dom";
 
 const ListContainer = styled.div`
   position: fixed;
@@ -73,26 +74,28 @@ const ListView: FC<{}> = (props: any) => {
       <ListContainer>
         <GridHolder>
           {petsList.map(pet => (
-            <StyledCard key={pet.id}>
-              <StyledCardMedia
-                image={safeGet(pet, "photos[0]", PlaceholderImg)}
-                title="Contemplative Reptile"
-              />
-              <CardContent>
-                <Typography variant="h6" gutterBottom align="center">
-                  {pet.petName}
-                </Typography>
-                <Typography color="textSecondary" gutterBottom>
-                  {pet.petGender} . {pet.petSpecies} . {pet.petBreed}
-                </Typography>
-                <Typography variant="body2" component="p">
-                  "{pet.petNotes}"
-                </Typography>
-              </CardContent>
-              {/* <CardActions>
+            <Link to={`/details/${pet.id}`} key={pet.id}>
+              <StyledCard>
+                <StyledCardMedia
+                  image={safeGet(pet, "photos[0]", PlaceholderImg)}
+                  title="Contemplative Reptile"
+                />
+                <CardContent>
+                  <Typography variant="h6" gutterBottom align="center">
+                    {pet.petName}
+                  </Typography>
+                  <Typography color="textSecondary" gutterBottom>
+                    {pet.petGender} . {pet.petSpecies} . {pet.petBreed}
+                  </Typography>
+                  <Typography variant="body2" component="p">
+                    "{pet.petNotes}"
+                  </Typography>
+                </CardContent>
+                {/* <CardActions>
                 <Button size="small">See More</Button>
               </CardActions> */}
-            </StyledCard>
+              </StyledCard>
+            </Link>
           ))}
         </GridHolder>
       </ListContainer>

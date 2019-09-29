@@ -9,41 +9,15 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
-import SwipeableViews from "react-swipeable-views";
 import Grid from "@material-ui/core/Grid";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
-import { autoPlay } from "react-swipeable-views-utils";
+import styled from "@emotion/styled";
+
 import ApiService, { wrapOperation } from "shared/services/apiService";
 import safeGet from "shared/utils/safeGet";
-
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
-const petDetails1 = {
-  isLost: true,
-  isSpayed: false,
-  isVaccinated: true,
-  lastSeenAt: {
-    address: "Yelahanka, Bengaluru, Bangalore Urban",
-    lat: 13.1185614,
-    long: 77.59746169999994
-  },
-  ownerAddress: "#2/49,rudrana complex , bhartinagar yelahanaka bangalore",
-  ownerEmail: "vineetpanwar027@gmail.com",
-  ownerName: "vineet panwar",
-  ownerPhone: "8123307697",
-  petBreed: "african",
-  petColor: "black",
-  petGender: "Female",
-  petName: "cansandra",
-  petNotes: "she was  agile and cute",
-  petSpecies: "Cat",
-  photos: [],
-  reward: "",
-  timestamp: "2019-09-29T11:19:24.180Z"
-};
 
 const tutorialSteps = [
   {
@@ -60,7 +34,11 @@ const tutorialSteps = [
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    width: "auto",
+    margin: "50px auto",
+    maxWidth: "50%",
+    minWidth: 400
   },
   header: {
     display: "flex",
@@ -97,6 +75,23 @@ const useStyles = makeStyles(theme => ({
     padding: " 20px "
   }
 }));
+
+const Carousel = styled.section`
+  width: 50%;
+  position: relative;
+  max-height: 300px;
+`;
+
+const CarouselImg = styled.img`
+  width: 100%;
+`;
+
+const StyledMobileStepper = styled(MobileStepper)`
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 16px);
+  background: rgba(202, 202, 202, 0.4);
+`;
 
 export const PetDetails: React.FC<RouteComponentProps> = ({
   match,
@@ -138,54 +133,42 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
 
   return (
     <div className={classes.root}>
-      <AutoPlaySwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-        index={activeStep}
-        onChangeIndex={handleStepChange}
-        enableMouseEvents
-      >
-        {tutorialSteps.map((step, index) => (
-          <div key={step.label}>
-            {Math.abs(activeStep - index) <= 2 ? (
-              <div className={classes.imgContainer}>
-                <img
-                  className={classes.img}
-                  src={step.imgPath}
-                  alt={step.label}
-                />
-              </div>
-            ) : null}
-          </div>
-        ))}
-      </AutoPlaySwipeableViews>
-      <MobileStepper
-        steps={maxSteps}
-        position="static"
-        variant="dots"
-        activeStep={activeStep}
-        nextButton={
-          <Button
-            size="small"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
-          >
-            {theme.direction === "rtl" ? (
-              <KeyboardArrowLeft />
-            ) : (
-              <KeyboardArrowRight />
-            )}
-          </Button>
-        }
-        backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-            {theme.direction === "rtl" ? (
-              <KeyboardArrowRight />
-            ) : (
-              <KeyboardArrowLeft />
-            )}
-          </Button>
-        }
-      />
+      <Carousel>
+        <CarouselImg src={tutorialSteps[activeStep].imgPath} />
+
+        <StyledMobileStepper
+          steps={maxSteps}
+          position="static"
+          variant="dots"
+          activeStep={activeStep}
+          nextButton={
+            <Button
+              size="small"
+              onClick={handleNext}
+              disabled={activeStep === maxSteps - 1}
+            >
+              {theme.direction === "rtl" ? (
+                <KeyboardArrowLeft />
+              ) : (
+                <KeyboardArrowRight />
+              )}
+            </Button>
+          }
+          backButton={
+            <Button
+              size="small"
+              onClick={handleBack}
+              disabled={activeStep === 0}
+            >
+              {theme.direction === "rtl" ? (
+                <KeyboardArrowRight />
+              ) : (
+                <KeyboardArrowLeft />
+              )}
+            </Button>
+          }
+        />
+      </Carousel>
       <Grid container spacing={2} className={classes.descriptionArea}>
         <Grid item xs={9}>
           <Paper className={classes.descriptionBox} elevation={5}>
@@ -223,7 +206,10 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
               align="left"
               className={classes.descriptionText}
             >
-              About:
+              <strong>Notes: </strong>
+              {petDetails.petNotes
+                ? petDetails.petNotes
+                : `Please help find the lost ${petDetails.petSpecies}.`}
             </Typography>
             <Table size={"small"}>
               <TableBody>
@@ -231,20 +217,27 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
                   <TableCell align="left" variant={"head"}>
                     Owner:
                   </TableCell>
-                  <TableCell align="left">{petDetails.ownerName}</TableCell>
+                  <TableCell align="left">
+                    {petDetails.ownerName || petDetails.yourName}
+                  </TableCell>
                 </TableRow>
                 <TableRow key={2}>
                   <TableCell align="left" variant={"head"}>
                     Address:
                   </TableCell>
-                  <TableCell align="left">{petDetails.ownerAddress}</TableCell>
+                  <TableCell align="left">
+                    {petDetails.ownerAddress || petDetails.yourAddress}
+                  </TableCell>
                 </TableRow>
                 <TableRow key={3}>
                   <TableCell align="left" variant={"head"}>
                     Contact:
                   </TableCell>
                   <TableCell align="left">
-                    {petDetails.ownerPhone || petDetails.ownerEmail}
+                    {petDetails.ownerPhone ||
+                      petDetails.yourPhone ||
+                      petDetails.ownerEmail ||
+                      petDetails.yourEmail}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -278,17 +271,6 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
                 <Divider variant="middle" />
               </>
             ) : null}
-            <span>&ldquo;</span>
-            <Typography
-              variant="body2"
-              align="left"
-              className={classes.subHeaderText}
-            >
-              {petDetails.petNotes
-                ? petDetails.petNotes
-                : `Please help find the lost ${petDetails.petSpecies}.`}
-            </Typography>
-            <span>&rdquo;</span>
           </Paper>
         </Grid>
       </Grid>
@@ -297,13 +279,3 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
 };
 
 export default PetDetails;
-// name: "Chetak",
-//   species: "Horse",
-//   breed: "Arabian",
-//   lastSeenAt: "HSR Layout",
-//   color: "Yellow",
-//   contactNumber: 8888888888,
-//   reward: "Rs. 1200",
-//   ownerName: "Majnu Bhai",
-//   ownerAddress: "Mumbai",
-// gender: male
