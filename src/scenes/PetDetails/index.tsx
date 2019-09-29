@@ -102,7 +102,6 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const [petDetails, setPetDetails] = useState<any>([]);
-  const maxSteps = tutorialSteps.length;
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -131,44 +130,50 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
     })();
   }, []);
 
+  const maxSteps = safeGet(petDetails, "photos", []).length;
+
   return (
     <div className={classes.root}>
-      <Carousel>
-        <CarouselImg src={tutorialSteps[activeStep].imgPath} />
+      {maxSteps > 0 && (
+        <>
+          <Carousel>
+            <CarouselImg src={tutorialSteps[activeStep].imgPath} />
 
-        <StyledMobileStepper
-          steps={maxSteps}
-          position="static"
-          variant="dots"
-          activeStep={activeStep}
-          nextButton={
-            <Button
-              size="small"
-              onClick={handleNext}
-              disabled={activeStep === maxSteps - 1}
-            >
-              {theme.direction === "rtl" ? (
-                <KeyboardArrowLeft />
-              ) : (
-                <KeyboardArrowRight />
-              )}
-            </Button>
-          }
-          backButton={
-            <Button
-              size="small"
-              onClick={handleBack}
-              disabled={activeStep === 0}
-            >
-              {theme.direction === "rtl" ? (
-                <KeyboardArrowRight />
-              ) : (
-                <KeyboardArrowLeft />
-              )}
-            </Button>
-          }
-        />
-      </Carousel>
+            <StyledMobileStepper
+              steps={maxSteps}
+              position="static"
+              variant="dots"
+              activeStep={activeStep}
+              nextButton={
+                <Button
+                  size="small"
+                  onClick={handleNext}
+                  disabled={activeStep === maxSteps - 1}
+                >
+                  {theme.direction === "rtl" ? (
+                    <KeyboardArrowLeft />
+                  ) : (
+                    <KeyboardArrowRight />
+                  )}
+                </Button>
+              }
+              backButton={
+                <Button
+                  size="small"
+                  onClick={handleBack}
+                  disabled={activeStep === 0}
+                >
+                  {theme.direction === "rtl" ? (
+                    <KeyboardArrowRight />
+                  ) : (
+                    <KeyboardArrowLeft />
+                  )}
+                </Button>
+              }
+            />
+          </Carousel>
+        </>
+      )}
       <Grid container spacing={2} className={classes.descriptionArea}>
         <Grid item xs={9}>
           <Paper className={classes.descriptionBox} elevation={5}>

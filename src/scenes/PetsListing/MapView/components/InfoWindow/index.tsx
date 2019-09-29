@@ -19,7 +19,11 @@ const useStyles = makeStyles({
     border: "1px solid black"
   },
   paper: {
-    backgroundColor: "white"
+    backgroundColor: "white",
+    textTransform: "capitalize"
+  },
+  header: {
+    color: "white"
   }
 });
 
@@ -28,8 +32,7 @@ type mapInfoType = {
 };
 export const MapInfo = (props: mapInfoType) => {
   const classes = useStyles();
-  // eslint-disable-next-line no-console
-  console.log(props);
+  const { petDetails: selectedPet } = props;
   const handleNameClick = useCallback(() => {
     console.warn("go to history page");
     // props.history.push(`/details/${}`)
@@ -37,14 +40,18 @@ export const MapInfo = (props: mapInfoType) => {
   return (
     <Paper className={classes.paper}>
       <Box fontWeight="fontWeightBold" bgcolor="secondary.main" p={5} m={-4}>
-        <Typography variant="h6" onClick={handleNameClick}>
-          DOGGO
+        <Typography
+          variant="h6"
+          onClick={handleNameClick}
+          className={classes.header}
+        >
+          {selectedPet.petName}
         </Typography>
       </Box>
       <Grid container justify="center" alignItems="center">
         <Avatar
-          alt="Remy Sharp"
-          src="/petPic.png"
+          alt={selectedPet.petName}
+          src={selectedPet.photos[0]}
           className={classes.bigAvatar}
           onClick={handleNameClick}
         />
@@ -55,19 +62,19 @@ export const MapInfo = (props: mapInfoType) => {
             <TableCell align="right" variant={"head"}>
               Species:
             </TableCell>
-            <TableCell align="left">Dog</TableCell>
+            <TableCell align="left">{selectedPet.petSpecies}</TableCell>
           </TableRow>
           <TableRow key={2}>
             <TableCell align="right" variant={"head"}>
               Breed:
             </TableCell>
-            <TableCell align="left">German Shepherd</TableCell>
+            <TableCell align="left">{selectedPet.petBreed}</TableCell>
           </TableRow>
           <TableRow key={3}>
             <TableCell align="right" variant={"head"}>
               Color:
             </TableCell>
-            <TableCell align="left">Brown</TableCell>
+            <TableCell align="left">{selectedPet.petColor}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

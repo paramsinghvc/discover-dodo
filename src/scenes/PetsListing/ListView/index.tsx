@@ -1,18 +1,16 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC } from "react";
 import styled from "@emotion/styled";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-import ApiService, { wrapOperation } from "shared/services/apiService";
 import PlaceholderImg from "assets/placeholder.png";
 
 import "./index.scss";
 import safeGet from "shared/utils/safeGet";
 import { Link } from "react-router-dom";
+import { PetInfoType } from "shared/types";
 
 const ListContainer = styled.div`
   position: fixed;
@@ -45,29 +43,12 @@ const StyledCardMedia = styled(CardMedia)`
   /* background-size: contain; */
 `;
 
-const ListView: FC<{}> = (props: any) => {
-  const [petsList, setPetsList] = useState<any>([]);
-  useEffect(() => {
-    (async function getUsers() {
-      const { response, error } = await wrapOperation(ApiService.getCollection)(
-        "pets"
-      );
+type ListProps = {
+  petDetails: Array<PetInfoType>;
+};
 
-      if (response) {
-        const { docs } = response;
-        const dataSource: any = [];
-        docs.forEach(document => {
-          let petDocument = {};
-          petDocument = { ...document.data(), id: document.id };
-          dataSource.push(petDocument);
-        });
-
-        setPetsList(dataSource);
-      } else {
-        // console.error("Oops", error);
-      }
-    })();
-  }, []);
+const ListView: FC<ListProps> = (props: ListProps) => {
+  const { petDetails: petsList } = props;
 
   return (
     <>

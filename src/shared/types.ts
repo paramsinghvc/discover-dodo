@@ -6,6 +6,7 @@ export interface IRootState {
 }
 
 export type PetInfoType = {
+  id: string;
   isLost: boolean;
   isSpayed: boolean;
   isVaccinated: boolean;
