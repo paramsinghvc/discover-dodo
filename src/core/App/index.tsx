@@ -10,6 +10,7 @@ import {
 
 import "./App.scss";
 import AppBar from "../components/AppBar";
+import ContentHeadSection from "../components/ContentHead";
 import { theme } from "../theme";
 import createStore from "../utils/createStore";
 import ReportLost from "scenes/Report/ReportLost";
@@ -18,6 +19,8 @@ import ApiService from "shared/services/apiService";
 import MapView from "scenes/MapView";
 import Details from "scenes/PetDescription";
 import storageService from "shared/services/storageService";
+import ListView from "scenes/ListView";
+import About from "scenes/About";
 
 const store = createStore();
 const { Provider } = createStoreContext<any>();
@@ -38,6 +41,7 @@ const App: React.FC = () => {
             <AppBar />
             <Switch>
               <Route exact path="/" component={MapView} />
+              <Route exact path="/list" component={ListView} />
               <Route exact path="/report/lost" component={ReportLost} />
               <Route exact path="/report/found" component={ReportFound} />
               <Route exact path="/map" component={MapView} />
