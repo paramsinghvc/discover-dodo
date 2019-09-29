@@ -63,6 +63,8 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     marginHorizontal: 100,
     border: 2,
+    width: "300px",
+    alignContent: "center",
     borderColor: "black",
     borderStyle: "solid"
   }
