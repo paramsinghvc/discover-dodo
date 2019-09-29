@@ -1,7 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ThemeProvider } from "@material-ui/styles";
 import { createStoreContext } from "@mollycule/redux-hook";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  // Redirect,
+  Switch
+} from "react-router-dom";
 
 import "./App.scss";
 import AppBar from "../components/AppBar";
@@ -10,9 +15,11 @@ import createStore from "../utils/createStore";
 import ReportLost from "scenes/Report/ReportLost";
 import ReportFound from "scenes/Report/ReportFound";
 import ApiService from "shared/services/apiService";
-import MapView from "scenes/MapView";
+import PetsListing from "scenes/PetsListing";
+import MapView from "scenes/PetsListing/MapView";
 import Details from "scenes/PetDetails";
 import storageService from "shared/services/storageService";
+import About from "scenes/About";
 
 const store = createStore();
 const { Provider } = createStoreContext<any>();
@@ -32,11 +39,12 @@ const App: React.FC = () => {
           <Router>
             <AppBar />
             <Switch>
-              <Route exact path="/" component={MapView} />
+              <Route exact path="/" component={PetsListing} />
               <Route exact path="/report/lost" component={ReportLost} />
               <Route exact path="/report/found" component={ReportFound} />
               <Route exact path="/map" component={MapView} />
               <Route exact path="/details/:id" component={Details} />
+              <Route exact path="/about" component={About} />
               {/* <Route render={() => <Redirect to="/" />} /> */}
             </Switch>
           </Router>

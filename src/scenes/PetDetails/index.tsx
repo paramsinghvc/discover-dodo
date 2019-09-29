@@ -1,7 +1,9 @@
-import React from "react";
+/* eslint-disable no-console */
+import React, { useState, useEffect } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import MobileStepper from "@material-ui/core/MobileStepper";
 import Paper from "@material-ui/core/Paper";
+import { RouteComponentProps } from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -14,21 +16,33 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
 import { autoPlay } from "react-swipeable-views-utils";
+import ApiService, { wrapOperation } from "shared/services/apiService";
+import safeGet from "shared/utils/safeGet";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const PetInfo = {
-  name: "Chetak",
-  species: "Horse",
-  breed: "Arabian",
-  gender: "Male",
-  lastSeenAt: "HSR Layout",
-  color: "Yellow",
-  contactNumber: 8888888888,
-  reward: "Rs. 1200",
-  ownerName: "Majnu Bhai",
-  ownerAddress: "Mumbai",
-  info: "Chetak is a very fiendly horse."
+const petDetails1 = {
+  isLost: true,
+  isSpayed: false,
+  isVaccinated: true,
+  lastSeenAt: {
+    address: "Yelahanka, Bengaluru, Bangalore Urban",
+    lat: 13.1185614,
+    long: 77.59746169999994
+  },
+  ownerAddress: "#2/49,rudrana complex , bhartinagar yelahanaka bangalore",
+  ownerEmail: "vineetpanwar027@gmail.com",
+  ownerName: "vineet panwar",
+  ownerPhone: "8123307697",
+  petBreed: "african",
+  petColor: "black",
+  petGender: "Female",
+  petName: "cansandra",
+  petNotes: "she was  agile and cute",
+  petSpecies: "Cat",
+  photos: [],
+  reward: "",
+  timestamp: "2019-09-29T11:19:24.180Z"
 };
 
 const tutorialSteps = [
@@ -41,21 +55,6 @@ const tutorialSteps = [
     label: "Bird",
     imgPath:
       "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60"
-  },
-  {
-    label: "Bali, Indonesia",
-    imgPath:
-      "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80"
-  },
-  {
-    label: "NeONBRAND Digital Marketing, Las Vegas, United States",
-    imgPath:
-      "https://images.unsplash.com/photo-1518732714860-b62714ce0c59?auto=format&fit=crop&w=400&h=250&q=60"
-  },
-  {
-    label: "Goč, Serbia",
-    imgPath:
-      "https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60"
   }
 ];
 
@@ -99,10 +98,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function SwipeableTextMobileStepper() {
+export const PetDetails: React.FC<RouteComponentProps> = ({
+  match,
+  ...props
+}) => {
+  const petId = safeGet(match, "params.id");
   const classes = useStyles();
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
+  const [petDetails, setPetDetails] = useState<any>([]);
   const maxSteps = tutorialSteps.length;
 
   const handleNext = () => {
@@ -116,6 +120,21 @@ function SwipeableTextMobileStepper() {
   const handleStepChange = step => {
     setActiveStep(step);
   };
+
+  useEffect(() => {
+    (async function getUsers() {
+      const { response, error } = await wrapOperation(
+        ApiService.getDocInCollection
+      )("pets", petId);
+
+      if (response) {
+        const data = response.data();
+        setPetDetails(data);
+      } else {
+        console.error("Oops", error);
+      }
+    })();
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -175,20 +194,20 @@ function SwipeableTextMobileStepper() {
               align="left"
               className={classes.headerText}
             >
-              {PetInfo.name}
+              {petDetails.petName}
             </Typography>
             <Typography
               variant="h5"
               align="left"
               className={classes.descriptionText}
             >
-              {PetInfo.species}
+              {petDetails.petSpecies}
               <span> &#8226; </span>
-              {PetInfo.breed}
+              {petDetails.petBreed}
               <span> &#8226; </span>
-              {PetInfo.color}
+              {petDetails.petColor}
               <span> &#8226; </span>
-              {PetInfo.gender}
+              {petDetails.petGender}
             </Typography>
             <Divider variant="middle" />
             <Typography
@@ -196,7 +215,7 @@ function SwipeableTextMobileStepper() {
               align="left"
               className={classes.descriptionText}
             >
-              Last seen at {PetInfo.lastSeenAt}
+              Last seen at {safeGet(petDetails, "lastSeenAt.address")}
             </Typography>
             <Divider variant="middle" />
             <Typography
@@ -212,19 +231,21 @@ function SwipeableTextMobileStepper() {
                   <TableCell align="left" variant={"head"}>
                     Owner:
                   </TableCell>
-                  <TableCell align="left">{PetInfo.ownerName}</TableCell>
+                  <TableCell align="left">{petDetails.ownerName}</TableCell>
                 </TableRow>
                 <TableRow key={2}>
                   <TableCell align="left" variant={"head"}>
                     Address:
                   </TableCell>
-                  <TableCell align="left">{PetInfo.ownerAddress}</TableCell>
+                  <TableCell align="left">{petDetails.ownerAddress}</TableCell>
                 </TableRow>
                 <TableRow key={3}>
                   <TableCell align="left" variant={"head"}>
                     Contact:
                   </TableCell>
-                  <TableCell align="left">{PetInfo.contactNumber}</TableCell>
+                  <TableCell align="left">
+                    {petDetails.ownerPhone || petDetails.ownerEmail}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -238,7 +259,7 @@ function SwipeableTextMobileStepper() {
 
         <Grid item xs={3}>
           <Paper elevation={5} className={classes.descriptionBox}>
-            {PetInfo.reward ? (
+            {petDetails.reward ? (
               <>
                 <Typography
                   variant="h5"
@@ -252,29 +273,30 @@ function SwipeableTextMobileStepper() {
                   align="center"
                   className={classes.headerText}
                 >
-                  {PetInfo.reward}
+                  {petDetails.reward}
                 </Typography>
                 <Divider variant="middle" />
               </>
             ) : null}
-
+            <span>&ldquo;</span>
             <Typography
               variant="body2"
               align="left"
               className={classes.subHeaderText}
             >
-              {PetInfo.info
-                ? PetInfo.info
-                : `Please help find the lost ${PetInfo.species}.`}
+              {petDetails.petNotes
+                ? petDetails.petNotes
+                : `Please help find the lost ${petDetails.petSpecies}.`}
             </Typography>
+            <span>&rdquo;</span>
           </Paper>
         </Grid>
       </Grid>
     </div>
   );
-}
+};
 
-export default SwipeableTextMobileStepper;
+export default PetDetails;
 // name: "Chetak",
 //   species: "Horse",
 //   breed: "Arabian",
