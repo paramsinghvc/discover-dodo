@@ -50,7 +50,7 @@ export const MapInfo = (props: mapInfoType) => {
       </Box>
       <Grid container justify="center" alignItems="center">
         <Avatar
-          alt="Remy Sharp"
+          alt={selectedPet.petName}
           src={selectedPet.photos[0]}
           className={classes.bigAvatar}
           onClick={handleNameClick}

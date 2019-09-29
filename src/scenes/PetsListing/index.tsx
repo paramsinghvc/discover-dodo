@@ -27,7 +27,7 @@ const PetsListing: FC<{} & RouteComponentProps> = ({ history }) => {
 
         setPetsList(dataSource);
       } else {
-        // console.error("Oops", error);
+        console.error("Oops", error);
       }
     })();
   }, []);
