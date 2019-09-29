@@ -74,24 +74,7 @@ export const Map: React.FC<MapProps> = props => {
           />
         );
       })}
-      {/* {lostData.map(place => {
-        return (
-          <Marker
-            key={place.id}
-            position={{
-              lat: place.lastSeenAt.lat,
-              lng: place.lastSeenAt.long
-            }}
-            onClick={() => {
-              setSelectedPlace(place);
-            }}
-            icon={{
-              url: "/pawprint-red.svg",
-              scaledSize: new (window as any).google.maps.Size(25, 25)
-            }}
-          />
-        );
-      })} */}
+
       {selectedPlace && (
         <InfoWindow
           position={{

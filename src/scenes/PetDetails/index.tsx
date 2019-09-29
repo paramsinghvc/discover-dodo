@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState, useEffect } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import MobileStepper from "@material-ui/core/MobileStepper";
@@ -17,12 +16,12 @@ import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
 import styled from "@emotion/styled";
 import Avatar from "@material-ui/core/Avatar";
-import { GoogleMap, withGoogleMap } from "react-google-maps";
 
 import ApiService, { wrapOperation } from "shared/services/apiService";
 import safeGet from "shared/utils/safeGet";
 import ProfileIcon from "assets/Profile-512.png";
 import PlaceholderImg from "assets/placeholder-gray.png";
+import Map from "./IntegratedMap";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,6 +46,10 @@ const useStyles = makeStyles(theme => ({
     padding: "0px",
     marginTop: "10px",
     overflow: "hidden"
+  },
+  mapBox: {
+    marginTop: "10px",
+    height: "150px"
   },
 
   headerText: {
@@ -205,7 +208,7 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
             </Typography>
             <Divider variant="middle" />
             <Typography
-              variant="body2"
+              variant="body1"
               align="left"
               className={classes.descriptionText}
             >
@@ -218,7 +221,7 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
 
             {petDetails.reward ? (
               <Typography
-                variant="h5"
+                variant="body1"
                 align="left"
                 className={classes.descriptionText}
               >
@@ -278,27 +281,13 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
               </Table>
             </Box>
           </Paper>
-          {/* <Paper elevation={5} className={classes.descriptionBox}>
-            {() =>
-              withGoogleMap(
-                <GoogleMap
-                  defaultZoom={10}
-                  center={{
-                    lat: safeGet(petDetails, "lastSeenAt.lat", 0),
-                    lng: safeGet(petDetails, "lastSeenAt.long", 0)
-                  }}
-                  defaultOptions={
-                    {
-                      fullscreenControl: false,
-                      panControl: false,
-                      streetViewControl: false,
-                      mapTypeControl: false
-                    } as any
-                  }
-                />
-              )
-            }
-          </Paper> */}
+          <Paper elevation={5} className={classes.mapBox}>
+            <Map
+              petInfo={petDetails}
+              containerElement={<div style={{ height: "100%" }} />}
+              mapElement={<div style={{ height: "100%" }} />}
+            />
+          </Paper>
         </Grid>
       </Grid>
     </div>
