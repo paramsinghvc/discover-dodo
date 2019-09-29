@@ -33,6 +33,24 @@
                 }
             },
             {
+                "id": "yourEmail",
+                "type": "TEXTFIELD",
+                "meta": {
+                    "label": "Your Email",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "autoFocus": true,
+                    "margin": "normal",
+                    "value": "",
+                    "type": "email"
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
                 "id": "yourAddress",
                 "type": "TEXTFIELD",
                 "meta": {

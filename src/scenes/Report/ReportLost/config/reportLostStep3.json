@@ -33,6 +33,24 @@
                 }
             },
             {
+                "id": "ownerEmail",
+                "type": "TEXTFIELD",
+                "meta": {
+                    "label": "Owner Email",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "autoFocus": true,
+                    "margin": "normal",
+                    "value": "",
+                    "type": "email"
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
                 "id": "ownerAddress",
                 "type": "TEXTFIELD",
                 "meta": {
