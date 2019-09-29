@@ -71,7 +71,7 @@ const useStyles = makeStyles(theme => ({
 const Carousel = styled.section`
   width: 100%;
   position: relative;
-  height: "fit-content";
+  height: 300px;
   max-height: 300px;
   background: rgba(0, 0, 0, 0.7);
   border-radius: 5px;
@@ -81,6 +81,7 @@ const Carousel = styled.section`
 const CarouselImg = styled.img`
   width: "fit-content";
   max-height: 300px;
+  height: 100%;
 `;
 
 const StyledMobileStepper = styled(MobileStepper)`
@@ -240,7 +241,7 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
           <Paper elevation={5} className={classes.descriptionBox}>
             <Avatar
               alt="Remy Sharp"
-              src={petDetails.userPhoto || ProfileIcon}
+              src={petDetails.userPhoto || petDetails.ownerPhoto || ProfileIcon}
               className={classes.avatar}
             />
             <Box overflow="auto">
