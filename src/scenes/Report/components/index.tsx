@@ -10,7 +10,7 @@ import LabelledRadioGroup from "./LabelledRadioGroup";
 import LocationInput from "./LocationInput";
 import PhotosUploader from "./PhotosUploader";
 import InfoText from "./InfoText";
-import GeneratePdf from "./GeneratePdf";
+import DownloadButton from "./DownloadButton";
 
 // FIXME: Typings
 const withLabel = (Control: React.ComponentType) => ({ label, ...props }) => {
@@ -32,6 +32,6 @@ componentsMap.set("SWITCH", withLabel(Switch));
 componentsMap.set("PHOTOS_UPLOADER", PhotosUploader);
 componentsMap.set("PHOTOS_UPLOADER", PhotosUploader);
 componentsMap.set("INFO_TEXT", InfoText);
-componentsMap.set("DOWNLOAD_PAMPHLET_BUTTON", GeneratePdf);
+componentsMap.set("DOWNLOAD_PAMPHLET_BUTTON", DownloadButton);
 
 export default componentsMap;

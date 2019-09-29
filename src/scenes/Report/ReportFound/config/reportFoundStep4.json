@@ -1,0 +1,16 @@
+{
+    "page": "REPORT_LOST4",
+    "config": {
+        "id": "formLayoutHolder4",
+        "type": "FORM_LAYOUT_HOLDER",
+        "children": [
+            {
+                "id": "successInfoText",
+                "type": "INFO_TEXT",
+                "meta": {
+                    "value": "Information Saved Successfully"
+                }
+            }
+        ]
+    }
+}

@@ -8,14 +8,13 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import { withRouter, RouteComponentProps } from "react-router";
 
-import FORM_CONFIG_1 from "./config/reportLostStep1.json";
-import FORM_CONFIG_2 from "./config/reportLostStep2.json";
-import FORM_CONFIG_3 from "./config/reportLostStep3.json";
-import FORM_CONFIG_4 from "./config/reportLostStep4.json";
-import componentsMap from "./components";
+import FORM_CONFIG_1 from "./config/reportFoundStep1.json";
+import FORM_CONFIG_2 from "./config/reportFoundStep2.json";
+import FORM_CONFIG_3 from "./config/reportFoundStep3.json";
+import FORM_CONFIG_4 from "./config/reportFoundStep4.json";
+import componentsMap from "../components";
 import ApiService, { wrapOperation } from "shared/services/apiService";
 import apiService from "shared/services/apiService";
-import DownloadLink from "./components/GeneratePdf";
 // import safeGet from "shared/utils/safeGet";
 // import Typography from "@material-ui/core/Typography";
 
@@ -32,15 +31,16 @@ const DisplaySection = styled.section<{ show: boolean }>`
 `;
 
 function getSteps() {
-  return [
-    "Enter Pet Details",
-    "Add more info",
-    "Add Owner Info",
-    "Download Pamphlet"
-  ];
+  return ["Enter Pet Details", "Add more info", "Add your Info", "Finish"];
 }
 
-const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
+const ReportFound: FC<{} & RouteComponentProps> = ({ history }) => {
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeDocumentId, setActiveDocumentId] = React.useState<
+    firebase.firestore.DocumentReference["id"]
+  >();
+  const steps = getSteps();
+
   const formRenderer1 = useMemo(() => {
     return new ReactConfigRenderer(FORM_CONFIG_1 as IConfig, componentsMap, {
       // initialValues: initialValuesMap,
@@ -57,7 +57,7 @@ const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
 
   const formRenderer4 = useMemo(() => {
     return new ReactConfigRenderer(FORM_CONFIG_4 as IConfig, componentsMap);
-  }, []);
+  }, [activeDocumentId]);
 
   const RenderedFormJSX1 = useMemo<React.ElementType>(
     () => (formRenderer1 ? formRenderer1.render() : () => <></>),
@@ -76,12 +76,6 @@ const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
     [formRenderer4]
   );
 
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [activeDocumentId, setActiveDocumentId] = React.useState<
-    firebase.firestore.DocumentReference["id"]
-  >();
-  const steps = getSteps();
-
   const handleNext = useCallback(() => {
     if (activeStep === steps.length - 1) return;
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -94,6 +88,8 @@ const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
   const submitFirstForm = useCallback(async () => {
     const formValues = formRenderer1.getCurrentValuesSnapshot();
     console.warn(formValues);
+    formValues.isFound = true;
+    formValues.timestamp = new Date().toISOString();
     delete formValues.formHeader;
 
     const operation = !activeDocumentId
@@ -218,9 +214,8 @@ const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
           {activeStep === steps.length - 1 ? "Finish" : "Next"}
         </Button>
       </Box>
-      <DownloadLink />
     </Container>
   );
 };
 
-export default withRouter(memo(ReportLost));
+export default withRouter(memo(ReportFound));

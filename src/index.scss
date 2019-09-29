@@ -50,6 +50,11 @@ code {
   padding: 0 2px;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 .gm-style .gm-style-iw-t::after{
   height: 5px;
   width: 5px;

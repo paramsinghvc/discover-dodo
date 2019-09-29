@@ -26,8 +26,16 @@
                 "id": "downloadButton",
                 "type": "DOWNLOAD_PAMPHLET_BUTTON",
                 "meta": {
-                    "value": "Download Pamphlet",
+                    "label": "Download Pamphlet",
                     "size": "large"
+                },
+                "events": {
+                    "onClick": {
+                        "type": "CUSTOM",
+                        "meta": {
+                            "name": "handleDownload"
+                        }
+                    }
                 }
             }
         ]
