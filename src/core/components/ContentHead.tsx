@@ -28,7 +28,6 @@ const useStyles = makeStyles(theme => ({
   chip: {
     margin: theme.spacing(0.5),
     fontSize: "1.25rem",
-    // backgroundColor: "#394A6D",
     color: "#394A6D"
   },
   listView: {
