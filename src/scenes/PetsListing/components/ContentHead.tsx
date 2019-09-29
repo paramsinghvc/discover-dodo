@@ -53,13 +53,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ContentHeadSection(props) {
-  const [isMapView, setMapView] = useState(
-    props.history.location.pathname.includes("list") ? false : true
-  );
+export default function ContentHeadSection({ onViewChange, isMapView }) {
   const classes = useStyles();
-
-  console.log(props, props.history.location.pathname);
 
   const [chipData, setChipData] = React.useState([
     { key: 0, label: "lost" },
@@ -68,6 +63,7 @@ export default function ContentHeadSection(props) {
     { key: 3, label: "Cat" },
     { key: 4, label: "Abandoned" }
   ]);
+
   const handleDelete = (chipToDelete: any) => () => {
     if (chipToDelete.label === "React") {
       alert("Why would you want to delete React?! :)");
@@ -75,17 +71,13 @@ export default function ContentHeadSection(props) {
     }
     setChipData(chips => chips.filter(chip => chip.key !== chipToDelete.key));
   };
+
   const handleOnClickListView = () => {
-    console.log("list");
-    props.history.push("/list");
-    setMapView(false);
+    onViewChange(1);
   };
 
   const handleOnClickMapView = () => {
-    console.log("map");
-
-    props.history.push("/map");
-    setMapView(true);
+    onViewChange(0);
   };
 
   return (

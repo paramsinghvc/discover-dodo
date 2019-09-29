@@ -11,7 +11,7 @@ const AboutContainer = styled.div`
 `;
 
 const About: FC<{}> = (props: any) => {
-  const { history } = props;
+  // const { history } = props;
   return (
     <>
       <AboutContainer>hi this is about page</AboutContainer>

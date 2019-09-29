@@ -9,8 +9,6 @@ import ApiService, { wrapOperation } from "shared/services/apiService";
 import Dog from "assets/dog.svg";
 import "./index.scss";
 
-import ContentHeadSection from "core/components/ContentHead";
-
 const ListContainer = styled.div`
   position: fixed;
   top: 0;
@@ -57,14 +55,13 @@ const ListView: FC<{}> = (props: any) => {
   const [petsList, setPetsList] = useState<any>([]);
   useEffect(() => {
     (async function getUsers() {
-      console.log("executing here");
       const { response, error } = await wrapOperation(ApiService.getCollection)(
         "pets"
       );
 
       if (response) {
         const { docs } = response;
-        let dataSource: any = [];
+        const dataSource: any = [];
         docs.forEach(document => {
           let petDocument = {};
           petDocument = { ...document.data(), id: document.id };
@@ -78,11 +75,9 @@ const ListView: FC<{}> = (props: any) => {
     })();
   }, []);
 
-  console.log(petsList);
   return (
     <>
       <ListContainer>
-        <ContentHeadSection history={history} />
         <GridList
           cellHeight={400}
           spacing={20}

@@ -1,25 +1,23 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ThemeProvider } from "@material-ui/styles";
 import { createStoreContext } from "@mollycule/redux-hook";
 import {
   BrowserRouter as Router,
   Route,
-  Redirect,
+  // Redirect,
   Switch
 } from "react-router-dom";
 
 import "./App.scss";
 import AppBar from "../components/AppBar";
-import ContentHeadSection from "../components/ContentHead";
 import { theme } from "../theme";
 import createStore from "../utils/createStore";
 import ReportLost from "scenes/Report/ReportLost";
 import ReportFound from "scenes/Report/ReportFound";
 import ApiService from "shared/services/apiService";
-import MapView from "scenes/MapView";
+import PetsListing from "scenes/PetsListing";
 import Details from "scenes/PetDescription";
 import storageService from "shared/services/storageService";
-import ListView from "scenes/ListView";
 import About from "scenes/About";
 
 const store = createStore();
@@ -40,12 +38,11 @@ const App: React.FC = () => {
           <Router>
             <AppBar />
             <Switch>
-              <Route exact path="/" component={MapView} />
-              <Route exact path="/list" component={ListView} />
+              <Route exact path="/" component={PetsListing} />
               <Route exact path="/report/lost" component={ReportLost} />
               <Route exact path="/report/found" component={ReportFound} />
-              <Route exact path="/map" component={MapView} />
               <Route exact path="/details" component={Details} />
+              <Route exact path="/about" component={About} />
               {/* <Route render={() => <Redirect to="/" />} /> */}
             </Switch>
           </Router>
