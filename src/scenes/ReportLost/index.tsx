@@ -12,6 +12,7 @@ import FORM_CONFIG_2 from "./config/reportLostStep2.json";
 import FORM_CONFIG_3 from "./config/reportLostStep3.json";
 import FORM_CONFIG_4 from "./config/reportLostStep4.json";
 import componentsMap from "./components";
+import DownloadLink from "../GeneratePdf/generatePdf";
 // import Typography from "@material-ui/core/Typography";
 
 const Container = styled.section`
@@ -139,6 +140,7 @@ const ReportLost: FC<{}> = () => {
           {activeStep === steps.length - 1 ? "Finish" : "Next"}
         </Button>
       </Box>
+      <DownloadLink />
     </Container>
   );
 };

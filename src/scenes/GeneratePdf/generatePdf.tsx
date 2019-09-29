@@ -5,53 +5,64 @@ import {
   Image,
   Document,
   StyleSheet,
-  PDFDownloadLink
+  PDFDownloadLink,
+  View
 } from "@react-pdf/renderer";
 import { Button } from "@material-ui/core";
 
-const DogInfo = {
-  name: "Doggo",
-  species: "Cat",
-  breed: "Persian",
+const PetInfo = {
+  name: "Chetak",
+  species: "Horse",
+  breed: "Arabian",
   lastSeenAt: "HSR Layout",
-  color: "cream",
-  contactNumber: 8888888888
+  color: "Yellow",
+  contactNumber: 8888888888,
+  reward: "Rs. 1200",
+  ownerName: "Majnu Bhai",
+  ownerAddress: "Mumbai"
 };
 
 // Create styles
 const styles = StyleSheet.create({
+  page: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+    backgroundColor: "#d6f1ff",
+    height: "100%"
+  },
   body: {
-    paddingTop: 35,
-    paddingBottom: 65,
-    backgroundColor: "#fad5d2"
+    border: 4,
+    borderColor: "#3dbdff",
+    borderStyle: "solid",
+    height: "100%",
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingHorizontal: 20
   },
   title: {
-    fontSize: 32,
+    fontSize: 40,
     textAlign: "center",
     textTransform: "capitalize",
-    fontWeight: "bold",
-    marginBottom: 40
-  },
-  author: {
-    fontSize: 24,
-    textAlign: "center",
-    marginBottom: 40
+    fontWeight: "ultrabold"
   },
   subtitle: {
-    fontSize: 18,
-    margin: 12,
-    textAlign: "center"
+    fontSize: 32,
+    textAlign: "center",
+    marginTop: 40
   },
   text: {
     margin: 12,
-    fontSize: 14,
+    fontSize: 24,
     textAlign: "center",
-    fontFamily: "Times-Roman"
+    fontFamily: "Times-Roman",
+    paddingTop: 20,
+    paddingBottom: 20
   },
   image: {
     marginVertical: 15,
     marginHorizontal: 100,
-    border: 5,
+    border: 2,
     borderColor: "black",
     borderStyle: "solid"
   }
@@ -59,17 +70,31 @@ const styles = StyleSheet.create({
 
 const Pamphlet = () => (
   <Document>
-    <Page size="A4" style={styles.body}>
-      <Text style={styles.title} wrap={true}>
-        LOST {DogInfo.species.toUpperCase()}
-      </Text>
-      <Text style={styles.author}>{DogInfo.name}</Text>
-      <Text style={styles.author}>{DogInfo.breed}</Text>
-      <Image style={styles.image} src="/logo192.png" />
-      <Text style={styles.subtitle}>Contact {DogInfo.contactNumber}</Text>
-      <Text style={styles.text}>
-        Last seen near {DogInfo.lastSeenAt}. If spotted, please let us know.
-      </Text>
+    <Page size="A4" style={styles.page}>
+      <View style={styles.body}>
+        <Text style={styles.title} wrap={true}>
+          LOST {PetInfo.species.toUpperCase()}
+        </Text>
+        <Text style={styles.subtitle}>Please help us find {PetInfo.name}</Text>
+        <Image style={styles.image} src="/petPic.png" />
+        <Text style={styles.text}>
+          {PetInfo.name}
+          {" is a loved "}
+          {PetInfo.color} colored {PetInfo.breed} {PetInfo.species}
+          {" being missed by his/her family."}
+        </Text>
+        <Text style={styles.text}>
+          Last seen near {PetInfo.lastSeenAt}. If spotted, please contact{" "}
+          {PetInfo.ownerName || "us"}
+        </Text>
+        <Text style={styles.title} wrap={true}>
+          {PetInfo.contactNumber}
+        </Text>
+
+        {PetInfo.reward && (
+          <Text style={styles.subtitle}>{PetInfo.reward} REWARD</Text>
+        )}
+      </View>
     </Page>
   </Document>
 );
