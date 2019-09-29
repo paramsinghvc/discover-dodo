@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Filter from "assets/funnel.svg";
 import Chip from "@material-ui/core/Chip";
@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    background: "white",
+    background: "rgba(255, 255, 255, 0.7)",
     border: 0,
     borderRadius: 3,
     boxShadow: "0 3px 5px 0px rgb(220,220,220)",
@@ -23,9 +23,11 @@ const useStyles = makeStyles(theme => ({
     zIndex: 3
   },
   filterToggle: {
-    width: "2rem",
+    width: "3rem",
     fontSize: "0.5rem",
-    marginRight: "1rem"
+    marginRight: "1rem",
+    position: "relative",
+    top: "-2px"
   },
   chip: {
     margin: theme.spacing(0.5)
@@ -51,20 +53,36 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ContentHeadSection({ onViewChange, isMapView }) {
+export default function ContentHeadSection({
+  onViewChange,
+  isMapView,
+  fetchPetsList
+}) {
   const classes = useStyles();
 
   const [chipData, setChipData] = React.useState([
-    { key: 0, label: "lost" },
-    { key: 1, label: "found" },
-    { key: 2, label: "Dog" },
-    { key: 3, label: "Cat" },
-    { key: 4, label: "Abandoned" }
+    { key: 0, label: "Lost", isActive: true },
+    { key: 1, label: "Found", isActive: true }
   ]);
 
-  const handleDelete = (chipToDelete: any) => () => {
-    setChipData(chips => chips.filter(chip => chip.key !== chipToDelete.key));
-  };
+  const handleChipClick = useCallback(
+    chipDetails => () => {
+      setChipData(previousChipsData =>
+        previousChipsData.map(chip => ({
+          ...chip,
+          isActive:
+            chip.key === chipDetails.key ? !chip.isActive : chip.isActive
+        }))
+      );
+    },
+    []
+  );
+
+  useEffect(() => {
+    fetchPetsList({
+      filters: { isLost: chipData[0].isActive, isFound: chipData[1].isActive }
+    });
+  }, [chipData]);
 
   const handleOnClickListView = () => {
     onViewChange(1);
@@ -81,12 +99,7 @@ export default function ContentHeadSection({ onViewChange, isMapView }) {
         className={classes.filterButton}
         aria-label="filter"
       >
-        <img
-          src={Filter}
-          className={classes.filterToggle}
-          alt="filter"
-          style={{ color: "#394A6D !important" }}
-        />
+        <img src={Filter} className={classes.filterToggle} alt="filter" />
       </IconButton>
 
       {chipData.map(data => {
@@ -95,8 +108,9 @@ export default function ContentHeadSection({ onViewChange, isMapView }) {
             key={data.key}
             color="secondary"
             label={data.label}
-            // onDelete={handleDelete(data)}
+            onClick={handleChipClick(data)}
             className={classes.chip}
+            variant={data.isActive ? "default" : "outlined"}
           />
         );
       })}

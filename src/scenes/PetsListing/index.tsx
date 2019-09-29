@@ -10,11 +10,27 @@ const PetsListing: FC<{} & RouteComponentProps> = ({ history }) => {
   const [activeView, setActiveView] = useState(0);
   const [petsList, setPetsList] = useState<any>([]);
 
-  useEffect(() => {
-    (async function getUsers() {
-      const { response, error } = await wrapOperation(ApiService.getCollection)(
-        "pets"
-      );
+  const fetchPetsList = useCallback(
+    async ({
+      filters = { isLost: true, isFound: true }
+    }: {
+      filters?: { isLost: boolean; isFound: boolean };
+    }) => {
+      const shouldFilterFound = filters.isFound && !filters.isLost;
+      const shouldFilterLost = !filters.isFound && filters.isLost;
+      const operation = shouldFilterFound
+        ? wrapOperation(ApiService.getCollectionConditional)(
+            "pets",
+            collection => collection.where("isFound", "==", true)
+          )
+        : shouldFilterLost
+        ? wrapOperation(ApiService.getCollectionConditional)(
+            "pets",
+            collection => collection.where("isLost", "==", true)
+          )
+        : wrapOperation(ApiService.getCollection)("pets");
+
+      const { response, error } = await operation;
 
       if (response) {
         const { docs } = response;
@@ -29,7 +45,12 @@ const PetsListing: FC<{} & RouteComponentProps> = ({ history }) => {
       } else {
         console.error("Oops", error);
       }
-    })();
+    },
+    [setPetsList]
+  );
+
+  useEffect(() => {
+    fetchPetsList({});
   }, []);
 
   const handleViewChange = useCallback((view: number) => {
@@ -41,6 +62,7 @@ const PetsListing: FC<{} & RouteComponentProps> = ({ history }) => {
       <ContentHeadSection
         isMapView={activeView === 0}
         onViewChange={handleViewChange}
+        fetchPetsList={fetchPetsList}
       />
       {activeView === 0 ? (
         <MapView petDetails={petsList} />

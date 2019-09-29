@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import TextField from "@material-ui/core/TextField";
+import TextField, { TextFieldProps } from "@material-ui/core/TextField";
 import Switch from "@material-ui/core/Switch";
 import Box, { BoxProps } from "@material-ui/core/Box";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -11,6 +11,7 @@ import LocationInput from "./LocationInput";
 import PhotosUploader from "./PhotosUploader";
 import InfoText from "./InfoText";
 import DownloadButton from "./DownloadButton";
+import safeGet from "shared/utils/safeGet";
 
 // FIXME: Typings
 const withLabel = (Control: React.ComponentType) => ({ label, ...props }) => {
@@ -21,9 +22,23 @@ const FormHeader: FC<BoxProps & { value: string }> = ({ value, ...props }) => (
   <Box {...props}>{value}</Box>
 );
 
+const WrappedTextField: FC<TextFieldProps & { validations: any }> = ({
+  validations,
+  ...props
+}) => {
+  const requiredError = safeGet(validations, "REQUIRED", "");
+  return (
+    <TextField
+      error={Boolean(requiredError)}
+      helperText={requiredError}
+      {...props}
+    />
+  );
+};
+
 const componentsMap: Map<string, React.ComponentType<any>> = new Map();
 componentsMap.set("FORM_HEADER", FormHeader);
-componentsMap.set("TEXTFIELD", TextField);
+componentsMap.set("TEXTFIELD", WrappedTextField);
 componentsMap.set("RADIO_GROUP", LabelledRadioGroup);
 componentsMap.set("LOCATION_INPUT", LocationInput);
 componentsMap.set("FORM_LAYOUT_HOLDER", LayoutHolder);

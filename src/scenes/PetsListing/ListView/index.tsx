@@ -14,7 +14,7 @@ import { PetInfoType } from "shared/types";
 
 const ListContainer = styled.div`
   position: fixed;
-  top: 160px;
+  top: 65px;
   bottom: 0;
   right: 0;
   left: 0;
@@ -24,7 +24,7 @@ const ListContainer = styled.div`
 `;
 
 const GridHolder = styled.section`
-  padding: 60px 60px 70px 60px;
+  padding: 160px 60px 70px 60px;
   width: inherit;
   height: inherit;
   display: grid;

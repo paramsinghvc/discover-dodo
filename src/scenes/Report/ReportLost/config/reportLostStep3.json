@@ -26,6 +26,11 @@
                     "margin": "normal",
                     "value": ""
                 },
+                "validations": [
+                    {
+                        "type": "REQUIRED"
+                    }
+                ],
                 "events": {
                     "onChange": {
                         "type": "SET_VALUE"
@@ -44,6 +49,11 @@
                     "value": "",
                     "type": "email"
                 },
+                "validations": [
+                    {
+                        "type": "REQUIRED"
+                    }
+                ],
                 "events": {
                     "onChange": {
                         "type": "SET_VALUE"
@@ -80,6 +90,11 @@
                     "margin": "normal",
                     "value": ""
                 },
+                "validations": [
+                    {
+                        "type": "REQUIRED"
+                    }
+                ],
                 "events": {
                     "onChange": {
                         "type": "SET_VALUE"

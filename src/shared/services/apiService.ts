@@ -37,6 +37,16 @@ class ApiService {
     return await this.db.collection(collectionName).get();
   };
 
+  public getCollectionConditional = async (
+    collectionName: string,
+    queryModifier: (
+      collection: firebase.firestore.CollectionReference
+    ) => firebase.firestore.Query
+  ) => {
+    if (!this.db) return;
+    return await queryModifier(this.db.collection(collectionName)).get();
+  };
+
   public getDocInCollection = async (collectionName: string, docId: string) => {
     if (!this.db) return;
     return await this.db
