@@ -1,53 +1,47 @@
 import React, { FC } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import styled from "@emotion/styled";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import GridListTileBar from "@material-ui/core/GridListTileBar";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import Dog from "assets/dog.svg";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
+
+import PlaceholderImg from "assets/placeholder.png";
+
 import "./index.scss";
+import safeGet from "shared/utils/safeGet";
+import { Link } from "react-router-dom";
 import { PetInfoType } from "shared/types";
 
 const ListContainer = styled.div`
   position: fixed;
-  top: 0;
+  top: 160px;
   bottom: 0;
   right: 0;
   left: 0;
-  padding-top: 64px;
-  width: "inherit";
+  width: inherit;
+  height: inherit;
+  overflow: auto;
 `;
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    overflow: "hidden"
-    // width: "inherit"
-    // backgroundColor: theme.palette.background.paper
-  },
-  gridList: {
-    height: "100%",
-    paddingLeft: "5%",
-    paddingRight: "5%",
-    paddingTop: "2%",
-    paddingBottom: "2%",
-    width: "100%"
-  },
-  gridTiles: {
-    width: "23% !important",
-    borderRadius: "100px 100px 100px 100px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  image: {
-    // height: "80%",
-    // width: "95% !important",
-    // backgroundColor: "#DCDCDC"
-  }
-}));
+
+const GridHolder = styled.section`
+  padding: 60px 60px 70px 60px;
+  width: inherit;
+  height: inherit;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+  grid-gap: 20px;
+  justify-items: start;
+`;
+
+const StyledCard = styled(Card)`
+  width: 250px;
+  height: 400px;
+`;
+
+const StyledCardMedia = styled(CardMedia)`
+  height: 250px;
+  /* background-size: contain; */
+`;
 
 type ListProps = {
   petDetails: Array<PetInfoType>;
@@ -55,58 +49,36 @@ type ListProps = {
 
 const ListView: FC<ListProps> = (props: ListProps) => {
   const { petDetails: petsList } = props;
-  const classes = useStyles();
-  // const { history } = props;
 
   return (
     <>
       <ListContainer>
-        <GridList
-          cellHeight={400}
-          spacing={20}
-          cols={4}
-          className={classes.gridList}
-        >
-          <GridListTile
-            key="Subheader"
-            cols={4}
-            style={{ height: "auto", backgroundColor: "", fontSize: "5rem" }}
-          >
-            <ListSubheader
-              component="div"
-              color="primary"
-              style={{
-                fontSize: "2.5rem"
-              }}
-            >
-              Pet List
-            </ListSubheader>
-          </GridListTile>
-
-          {petsList.map(tile => (
-            <GridListTile key={tile.id} className={classes.gridTiles}>
-              {tile.photos ? (
-                <img src={tile.photos[0]} alt={tile.id} />
-              ) : (
-                <img src={Dog} className={classes.image} alt="Species" />
-              )}
-              <GridListTileBar
-                title={tile.petName}
-                subtitle={
-                  <div>
-                    {tile.lastSeenAt && (
-                      <span> last seen at:{tile.lastSeenAt.address}</span>
-                    )}
-                    {tile.petBreed && <span> breed:{tile.petBreed}</span>}
-                    {/* {tile.lastSeenOn && (
-                      <span> last Seen On:{tile.lastSeenOn}</span>
-                    )} */}
-                  </div>
-                }
-              />
-            </GridListTile>
+        <GridHolder>
+          {petsList.map(pet => (
+            <Link to={`/details/${pet.id}`} key={pet.id}>
+              <StyledCard>
+                <StyledCardMedia
+                  image={safeGet(pet, "photos[0]", PlaceholderImg)}
+                  title="Contemplative Reptile"
+                />
+                <CardContent>
+                  <Typography variant="h6" gutterBottom align="center">
+                    {pet.petName}
+                  </Typography>
+                  <Typography color="textSecondary" gutterBottom>
+                    {pet.petGender} . {pet.petSpecies} . {pet.petBreed}
+                  </Typography>
+                  <Typography variant="body2" component="p">
+                    "{pet.petNotes}"
+                  </Typography>
+                </CardContent>
+                {/* <CardActions>
+                <Button size="small">See More</Button>
+              </CardActions> */}
+              </StyledCard>
+            </Link>
           ))}
-        </GridList>
+        </GridHolder>
       </ListContainer>
     </>
   );

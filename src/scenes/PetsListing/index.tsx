@@ -31,9 +31,11 @@ const PetsListing: FC<{} & RouteComponentProps> = ({ history }) => {
       }
     })();
   }, []);
+
   const handleViewChange = useCallback((view: number) => {
     setActiveView(view);
   }, []);
+
   return (
     <>
       <ContentHeadSection

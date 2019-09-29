@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Filter from "assets/filter.svg";
+import Filter from "assets/funnel.svg";
 import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
@@ -28,9 +28,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: "1rem"
   },
   chip: {
-    margin: theme.spacing(0.5),
-    fontSize: "1.25rem",
-    color: "#394A6D"
+    margin: theme.spacing(0.5)
   },
   listView: {
     height: "40px",
@@ -65,10 +63,6 @@ export default function ContentHeadSection({ onViewChange, isMapView }) {
   ]);
 
   const handleDelete = (chipToDelete: any) => () => {
-    if (chipToDelete.label === "React") {
-      alert("Why would you want to delete React?! :)");
-      return;
-    }
     setChipData(chips => chips.filter(chip => chip.key !== chipToDelete.key));
   };
 
@@ -98,11 +92,10 @@ export default function ContentHeadSection({ onViewChange, isMapView }) {
       {chipData.map(data => {
         return (
           <Chip
-            variant="outlined"
             key={data.key}
-            color="primary"
+            color="secondary"
             label={data.label}
-            onDelete={handleDelete(data)}
+            // onDelete={handleDelete(data)}
             className={classes.chip}
           />
         );
