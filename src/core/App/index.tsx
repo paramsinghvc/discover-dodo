@@ -15,6 +15,7 @@ import createStore from "../utils/createStore";
 import ReportLost from "scenes/ReportLost";
 import ApiService from "shared/services/apiService";
 import MapView from "scenes/MapView";
+import Details from "scenes/PetDescription";
 import storageService from "shared/services/storageService";
 
 const store = createStore();
@@ -38,6 +39,7 @@ const App: React.FC = () => {
               <Route exact path="/" component={MapView} />
               <Route exact path="/report" component={ReportLost} />
               <Route exact path="/map" component={MapView} />
+              <Route exact path="/details" component={Details} />
               {/* <Route render={() => <Redirect to="/" />} /> */}
             </Switch>
           </Router>
