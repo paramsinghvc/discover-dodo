@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    background: "white",
+    background: "rgba(255, 255, 255, 0.7)",
     border: 0,
     borderRadius: 3,
     boxShadow: "0 3px 5px 0px rgb(220,220,220)",
