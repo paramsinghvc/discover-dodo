@@ -44,8 +44,9 @@ const useStyles = makeStyles(theme => ({
   },
 
   descriptionBox: {
-    padding: "10px",
-    marginTop: "10px"
+    padding: "0px",
+    marginTop: "10px",
+    overflow: "hidden"
   },
 
   headerText: {
@@ -60,7 +61,7 @@ const useStyles = makeStyles(theme => ({
   },
 
   avatar: {
-    margin: "auto",
+    margin: "30px auto",
     width: 60,
     height: 60,
     filter: "grayscale(100%)"
@@ -239,7 +240,7 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
           <Paper elevation={5} className={classes.descriptionBox}>
             <Avatar
               alt="Remy Sharp"
-              src={petDetails.ownerPhoto || ProfileIcon}
+              src={petDetails.userPhoto || ProfileIcon}
               className={classes.avatar}
             />
             <Box overflow="auto">
