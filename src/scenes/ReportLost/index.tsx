@@ -15,7 +15,7 @@ import FORM_CONFIG_4 from "./config/reportLostStep4.json";
 import componentsMap from "./components";
 import ApiService, { wrapOperation } from "shared/services/apiService";
 import apiService from "shared/services/apiService";
-// import DownloadLink from "../GeneratePdf/generatePdf";
+import DownloadLink from "./components/GeneratePdf";
 // import safeGet from "shared/utils/safeGet";
 // import Typography from "@material-ui/core/Typography";
 
@@ -218,7 +218,7 @@ const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
           {activeStep === steps.length - 1 ? "Finish" : "Next"}
         </Button>
       </Box>
-      {/* <DownloadLink /> */}
+      <DownloadLink />
     </Container>
   );
 };
