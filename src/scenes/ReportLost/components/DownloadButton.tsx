@@ -1,4 +1,11 @@
-import React, { FC, useEffect, useCallback, useState, memo } from "react";
+import React, {
+  FC,
+  useEffect,
+  useCallback,
+  useState,
+  memo,
+  useMemo
+} from "react";
 import styled from "@emotion/styled";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Button from "@material-ui/core/Button";
@@ -11,7 +18,9 @@ import {
   PDFDownloadLink,
   View
 } from "@react-pdf/renderer";
-import apiService, { wrapOperation } from "shared/services/apiService";
+
+import apiService from "shared/services/apiService";
+import safeGet from "shared/utils/safeGet";
 
 const petInfo = {
   name: "Chetak",
@@ -72,31 +81,36 @@ const styles = StyleSheet.create({
   }
 });
 
-const Pamphlet = petInfo => (
+const Pamphlet = ({ petInfo = {} }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.body}>
         <Text style={styles.title} wrap={true}>
-          LOST {petInfo.species.toUpperCase()}
+          LOST {safeGet(petInfo, "species", "").toUpperCase()}
         </Text>
-        <Text style={styles.subtitle}>Please help us find {petInfo.name}</Text>
+        <Text style={styles.subtitle}>
+          Please help us find {safeGet(petInfo, "name")}
+        </Text>
         <Image style={styles.image} src="/petPic.png" />
         <Text style={styles.text}>
-          {petInfo.name}
+          {safeGet(petInfo, "name")}
           {" is a loved "}
-          {petInfo.color} colored {petInfo.breed} {petInfo.species}
+          {safeGet(petInfo, "color")} colored {safeGet(petInfo, "breed")}{" "}
+          {safeGet(petInfo, "species")}
           {" being missed by his/her family."}
         </Text>
         <Text style={styles.text}>
-          Last seen near {petInfo.lastSeenAt}. If spotted, please contact{" "}
-          {petInfo.ownerName || "us"}
+          Last seen near {safeGet(petInfo, "lastSeenAt")}. If spotted, please
+          contact {safeGet(petInfo, "ownerName") || "us"}
         </Text>
         <Text style={styles.title} wrap={true}>
-          {petInfo.contactNumber}
+          {safeGet(petInfo, "contactNumber")}
         </Text>
 
-        {petInfo.reward && (
-          <Text style={styles.subtitle}>{petInfo.reward} REWARD</Text>
+        {safeGet(petInfo, "reward") && (
+          <Text style={styles.subtitle}>
+            {safeGet(petInfo, "reward")} REWARD
+          </Text>
         )}
       </View>
     </Page>
@@ -119,7 +133,15 @@ const DownloadButton: FC<{ value: string; label: string }> = ({
   label,
   ...props
 }) => {
-  // const [petData, setPetData] = useState();
+  const [petData, setPetData] = useState();
+  // const [open, setOpen] = useState(false);
+
+  // useEffect(() => {
+  //   setOpen(false);
+  //   setOpen(true);
+  //   return () => setOpen(false);
+  // });
+
   const fetchData = useCallback(async () => {
     if (value) {
       // const { response, error } = await wrapOperation(
@@ -135,7 +157,10 @@ const DownloadButton: FC<{ value: string; label: string }> = ({
           .collection("pets")
           .doc(value)
           .onSnapshot(doc => {
-            console.warn("response", doc.data());
+            const data = doc.data();
+            if (data) {
+              setPetData(data);
+            }
           });
     }
   }, [value]);
@@ -144,20 +169,26 @@ const DownloadButton: FC<{ value: string; label: string }> = ({
     fetchData();
   }, [value]);
 
+  const PamphletElement = useMemo(() => {
+    return () => <Pamphlet petInfo={petData} />;
+  }, []);
+
   return (
     <Holder>
-      {/* <PDFDownloadLink
-        document={<Pamphlet petInfo={petInfo} />}
-        fileName="Pamphlet.pdf"
-        style={{ textDecoration: "none" }}
-      > */}
-      <Button variant="contained" color="secondary" {...props}>
-        <ButtonContent>
-          <SaveAlt />
-          <span>{label}</span>
-        </ButtonContent>
-      </Button>
-      {/* </PDFDownloadLink> */}
+      {petData && (
+        <PDFDownloadLink
+          document={<PamphletElement />}
+          fileName="Pamphlet.pdf"
+          style={{ textDecoration: "none" }}
+        >
+          <Button variant="contained" color="secondary" {...props}>
+            <ButtonContent>
+              <SaveAlt />
+              <span>{label}</span>
+            </ButtonContent>
+          </Button>
+        </PDFDownloadLink>
+      )}
     </Holder>
   );
 };
