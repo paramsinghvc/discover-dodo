@@ -6,12 +6,16 @@ import Box from "@material-ui/core/Box";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
+import { withRouter, RouteComponentProps } from "react-router";
 
 import FORM_CONFIG_1 from "./config/reportLostStep1.json";
 import FORM_CONFIG_2 from "./config/reportLostStep2.json";
 import FORM_CONFIG_3 from "./config/reportLostStep3.json";
 import FORM_CONFIG_4 from "./config/reportLostStep4.json";
 import componentsMap from "./components";
+import ApiService, { wrapOperation } from "shared/services/apiService";
+import apiService from "shared/services/apiService";
+// import safeGet from "shared/utils/safeGet";
 // import Typography from "@material-ui/core/Typography";
 
 const Container = styled.section`
@@ -21,9 +25,6 @@ const Container = styled.section`
   max-width: 50%;
   min-width: 400px;
 `;
-
-// import ApiService, { wrapOperation } from "shared/services/apiService";
-// import safeGet from "shared/utils/safeGet";
 
 const DisplaySection = styled.section<{ show: boolean }>`
   display: ${({ show }) => (show ? "block" : "none")};
@@ -38,7 +39,7 @@ function getSteps() {
   ];
 }
 
-const ReportLost: FC<{}> = () => {
+const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
   const formRenderer1 = useMemo(() => {
     return new ReactConfigRenderer(FORM_CONFIG_1 as IConfig, componentsMap, {
       // initialValues: initialValuesMap,
@@ -75,23 +76,10 @@ const ReportLost: FC<{}> = () => {
   );
 
   const [activeStep, setActiveStep] = React.useState(0);
+  const [activeDocumentId, setActiveDocumentId] = React.useState<
+    firebase.firestore.DocumentReference["id"]
+  >();
   const steps = getSteps();
-
-  // const getStepContent = useCallback(
-  //   (stepIndex: number) => {
-  //     switch (stepIndex) {
-  //       case 0:
-  //         return RenderedFormJSX1;
-  //       case 1:
-  //         return RenderedFormJSX2;
-  //       case 2:
-  //         return RenderedFormJSX3;
-  //       default:
-  //         return RenderedFormJSX4;
-  //     }
-  //   },
-  //   [RenderedFormJSX1, RenderedFormJSX2, RenderedFormJSX3, RenderedFormJSX4]
-  // );
 
   const handleNext = useCallback(() => {
     if (activeStep === steps.length - 1) return;
@@ -102,16 +90,88 @@ const ReportLost: FC<{}> = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   }, [setActiveStep]);
 
-  // const handleReset = () => {
-  //   setActiveStep(0);
-  // };
+  const submitFirstForm = useCallback(async () => {
+    const formValues = formRenderer1.getCurrentValuesSnapshot();
+    console.warn(formValues);
+    delete formValues.formHeader;
+
+    const operation = !activeDocumentId
+      ? wrapOperation(apiService.addDataToCollection)("pets", formValues)
+      : wrapOperation(apiService.updateDocInCollection)(
+          "pets",
+          activeDocumentId,
+          formValues
+        );
+
+    const { response, error } = await operation;
+    if (!error) {
+      console.warn(response);
+      if (!activeDocumentId && response) {
+        setActiveDocumentId(response.id);
+      }
+      handleNext();
+    } else {
+      console.warn(error);
+    }
+  }, [formRenderer1, handleNext, activeDocumentId]);
+
+  const submitSecondForm = useCallback(async () => {
+    const formValues = formRenderer2.getCurrentValuesSnapshot();
+    console.warn(formValues);
+    formValues.photos = (formValues.photos || []).map(
+      photo => photo.downloadURL
+    );
+    delete formValues.formHeader2;
+
+    if (!activeDocumentId) return;
+
+    const { response, error } = await wrapOperation(
+      apiService.updateDocInCollection
+    )("pets", activeDocumentId, formValues);
+
+    if (!error) {
+      console.warn(response);
+      handleNext();
+    } else {
+      console.warn(error);
+    }
+  }, [formRenderer2, handleNext, activeDocumentId]);
+
+  const submitThirdForm = useCallback(async () => {
+    const formValues = formRenderer3.getCurrentValuesSnapshot();
+    console.warn(formValues);
+    delete formValues.formHeader3;
+
+    if (!activeDocumentId) return;
+
+    const { response, error } = await wrapOperation(
+      apiService.updateDocInCollection
+    )("pets", activeDocumentId, formValues);
+
+    if (!error) {
+      console.warn(response);
+      handleNext();
+    } else {
+      console.warn(error);
+    }
+  }, [formRenderer3, handleNext, activeDocumentId]);
 
   const handleSubmit = useCallback(() => {
-    if (formRenderer1) {
-      console.warn(formRenderer1.getCurrentValuesSnapshot());
-      handleNext();
+    switch (activeStep) {
+      case 0:
+        submitFirstForm();
+        break;
+      case 1:
+        submitSecondForm();
+        break;
+      case 2:
+        submitThirdForm();
+        break;
+      case 3:
+        history.push("/");
+        break;
     }
-  }, [formRenderer1, handleNext]);
+  }, [submitFirstForm, submitSecondForm, submitThirdForm, activeStep]);
 
   return (
     <Container>
@@ -161,4 +221,4 @@ const ReportLost: FC<{}> = () => {
   );
 };
 
-export default memo(ReportLost);
+export default withRouter(memo(ReportLost));
