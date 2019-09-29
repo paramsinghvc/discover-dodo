@@ -1,0 +1,148 @@
+{
+    "page": "REPORT_LOST",
+    "config": {
+        "id": "formLayoutHolder",
+        "type": "FORM_LAYOUT_HOLDER",
+        "children": [
+            {
+                "id": "formHeader",
+                "type": "FORM_HEADER",
+                "meta": {
+                    "value": "Report Lost Pet",
+                    "textAlign": "left",
+                    "fontWeight": "fontWeightBold",
+                    "fontSize": "h4.fontSize",
+                    "pb": 2
+                }
+            },
+            {
+                "id": "photos",
+                "type": "PHOTOS_UPLOADER",
+                "meta": {
+                    "value": []
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
+                "id": "petName",
+                "type": "TEXTFIELD",
+                "meta": {
+                    "label": "Pet Name",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "autoFocus": true,
+                    "margin": "normal",
+                    "value": ""
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
+                "id": "petSpecies",
+                "type": "RADIO_GROUP",
+                "meta": {
+                    "datasource": [
+                        "Dog",
+                        "Cat",
+                        "Bird",
+                        "Rabbit",
+                        "Others"
+                    ],
+                    "label": "Species",
+                    "row": true,
+                    "value": "Dog"
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
+                "id": "petBreed",
+                "type": "TEXTFIELD",
+                "meta": {
+                    "label": "Breed",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "margin": "normal",
+                    "value": ""
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
+                "id": "petColor",
+                "type": "TEXTFIELD",
+                "meta": {
+                    "label": "Color",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "margin": "normal",
+                    "value": ""
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
+                "id": "lastSeenAt",
+                "type": "LOCATION_INPUT",
+                "meta": {
+                    "label": "Last Seen At",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "margin": "normal",
+                    "value": ""
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
+                "id": "switchesGroup",
+                "type": "SWITCHES_GROUP",
+                "children": [
+                    {
+                        "id": "isVaccinated",
+                        "type": "SWITCH",
+                        "meta": {
+                            "label": "Is Vaccinated?"
+                        },
+                        "events": {
+                            "onChange": {
+                                "type": "SET_VALUE"
+                            }
+                        }
+                    },
+                    {
+                        "id": "isSpayed",
+                        "type": "SWITCH",
+                        "meta": {
+                            "label": "Is Spayed/Neutered?"
+                        },
+                        "events": {
+                            "onChange": {
+                                "type": "SET_VALUE"
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

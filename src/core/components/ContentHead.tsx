@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Filter from "assets/filter.svg";
 import Chip from "@material-ui/core/Chip";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles(theme => ({
   root: {
     background: "white",
     border: 0,
     borderRadius: 3,
-    boxShadow: "0 3px 5px 0px rgb(56,56,56)",
+    boxShadow: "0 3px 5px 0px rgb(220,220,220)",
     height: 75,
     width: "100%",
     padding: "10px",
@@ -19,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center"
   },
   filterToggle: {
-    width: "3.5rem",
+    width: "2rem",
     fontSize: "0.5rem",
     marginRight: "1rem"
   },
@@ -28,11 +30,35 @@ const useStyles = makeStyles(theme => ({
     fontSize: "1.25rem",
     // backgroundColor: "#394A6D",
     color: "#394A6D"
+  },
+  listView: {
+    height: "40px",
+    width: "100px",
+    fontSize: "1.25rem"
+  },
+  mapView: {
+    height: "40px",
+    width: "100px",
+    fontSize: "1.25rem"
+  },
+  views: {
+    marginLeft: "auto",
+    marginRight: "2%"
+  },
+  listViewButton: {},
+  mapViewButton: {},
+  filterButton: {
+    margin: theme.spacing(1)
   }
 }));
 
-export default function ContentHeadSection() {
+export default function ContentHeadSection(props) {
+  const [isMapView, setMapView] = useState(
+    props.history.location.pathname.includes("list") ? false : true
+  );
   const classes = useStyles();
+
+  console.log(props, props.history.location.pathname);
 
   const [chipData, setChipData] = React.useState([
     { key: 0, label: "lost" },
@@ -48,15 +74,34 @@ export default function ContentHeadSection() {
     }
     setChipData(chips => chips.filter(chip => chip.key !== chipToDelete.key));
   };
+  const handleOnClickListView = () => {
+    console.log("list");
+    props.history.push("/list");
+    setMapView(false);
+  };
+
+  const handleOnClickMapView = () => {
+    console.log("map");
+
+    props.history.push("/map");
+    setMapView(true);
+  };
 
   return (
     <section className={classes.root}>
-      <img
-        src={Filter}
-        className={classes.filterToggle}
-        alt="filter"
-        style={{ color: "#394A6D !important" }}
-      />
+      <IconButton
+        color="primary"
+        className={classes.filterButton}
+        aria-label="filter"
+      >
+        <img
+          src={Filter}
+          className={classes.filterToggle}
+          alt="filter"
+          style={{ color: "#394A6D !important" }}
+        />
+      </IconButton>
+
       {chipData.map(data => {
         return (
           <Chip
@@ -69,6 +114,25 @@ export default function ContentHeadSection() {
           />
         );
       })}
+
+      <ButtonGroup size="small" className={classes.views}>
+        <Button
+          variant={isMapView ? undefined : "contained"}
+          color="primary"
+          className={classes.listViewButton}
+          onClick={handleOnClickListView}
+        >
+          List View
+        </Button>
+        <Button
+          variant={isMapView ? "contained" : undefined}
+          color="primary"
+          className={classes.mapViewButton}
+          onClick={handleOnClickMapView}
+        >
+          Map View
+        </Button>
+      </ButtonGroup>
     </section>
   );
 }
