@@ -8,7 +8,7 @@
                 "id": "formHeader3",
                 "type": "FORM_HEADER",
                 "meta": {
-                    "value": "Add owner Info",
+                    "value": "Add your Info",
                     "textAlign": "left",
                     "fontWeight": "fontWeightBold",
                     "fontSize": "h6.fontSize",
@@ -16,10 +16,10 @@
                 }
             },
             {
-                "id": "ownerName",
+                "id": "yourName",
                 "type": "TEXTFIELD",
                 "meta": {
-                    "label": "Owner Name",
+                    "label": "Your Name",
                     "variant": "outlined",
                     "fullWidth": true,
                     "autoFocus": true,
@@ -33,10 +33,28 @@
                 }
             },
             {
-                "id": "ownerAddress",
+                "id": "yourEmail",
                 "type": "TEXTFIELD",
                 "meta": {
-                    "label": "Owner Address",
+                    "label": "Your Email",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "autoFocus": true,
+                    "margin": "normal",
+                    "value": "",
+                    "type": "email"
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
+                "id": "yourAddress",
+                "type": "TEXTFIELD",
+                "meta": {
+                    "label": "Your Address",
                     "variant": "outlined",
                     "fullWidth": true,
                     "autoFocus": true,
@@ -52,10 +70,27 @@
                 }
             },
             {
-                "id": "ownerPhone",
+                "id": "yourPhone",
                 "type": "TEXTFIELD",
                 "meta": {
-                    "label": "Owner Phone",
+                    "label": "Your Phone",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "autoFocus": true,
+                    "margin": "normal",
+                    "value": ""
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
+                "id": "rewardSeeked",
+                "type": "TEXTFIELD",
+                "meta": {
+                    "label": "Seeking Reward Value?",
                     "variant": "outlined",
                     "fullWidth": true,
                     "autoFocus": true,

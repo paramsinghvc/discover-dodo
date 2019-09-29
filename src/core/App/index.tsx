@@ -13,7 +13,8 @@ import AppBar from "../components/AppBar";
 import ContentHeadSection from "../components/ContentHead";
 import { theme } from "../theme";
 import createStore from "../utils/createStore";
-import ReportLost from "scenes/ReportLost";
+import ReportLost from "scenes/Report/ReportLost";
+import ReportFound from "scenes/Report/ReportFound";
 import ApiService from "shared/services/apiService";
 import MapView from "scenes/MapView";
 import Details from "scenes/PetDescription";
@@ -36,13 +37,13 @@ const App: React.FC = () => {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <div className="App">
-          <AppBar />
           <Router>
+            <AppBar />
             <Switch>
               <Route exact path="/" component={MapView} />
               <Route exact path="/list" component={ListView} />
-              <Route exact path="/about" component={About} />
-              <Route exact path="/report" component={ReportLost} />
+              <Route exact path="/report/lost" component={ReportLost} />
+              <Route exact path="/report/found" component={ReportFound} />
               <Route exact path="/map" component={MapView} />
               <Route exact path="/details" component={Details} />
               {/* <Route render={() => <Redirect to="/" />} /> */}

@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useCallback, memo } from "react";
+import React, { FC, useMemo, useCallback, useEffect, memo } from "react";
 import { ReactConfigRenderer, IConfig } from "@mollycule/mason";
 import styled from "@emotion/styled";
 import Button from "@material-ui/core/Button";
@@ -12,9 +12,9 @@ import FORM_CONFIG_1 from "./config/reportLostStep1.json";
 import FORM_CONFIG_2 from "./config/reportLostStep2.json";
 import FORM_CONFIG_3 from "./config/reportLostStep3.json";
 import FORM_CONFIG_4 from "./config/reportLostStep4.json";
-import componentsMap from "./components";
-import ApiService, { wrapOperation } from "shared/services/apiService";
-import apiService from "shared/services/apiService";
+import componentsMap from "../components";
+import apiService, { wrapOperation } from "shared/services/apiService";
+import authService from "shared/services/authService";
 // import safeGet from "shared/utils/safeGet";
 // import Typography from "@material-ui/core/Typography";
 
@@ -71,6 +71,19 @@ const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
     });
   }, [activeDocumentId]);
 
+  useEffect(() => {
+    authService.onAuthStateChanged(user => {
+      const valuesMap = new Map();
+      if (user) {
+        const { displayName, email, phoneNumber } = user;
+        valuesMap.set("ownerName", displayName);
+        valuesMap.set("ownerEmail", email);
+        phoneNumber && valuesMap.set("ownerPhone", phoneNumber);
+        formRenderer3.setValue(valuesMap);
+      }
+    });
+  }, [formRenderer3]);
+
   const RenderedFormJSX1 = useMemo<React.ElementType>(
     () => (formRenderer1 ? formRenderer1.render() : () => <></>),
     [formRenderer1]
@@ -100,6 +113,8 @@ const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
   const submitFirstForm = useCallback(async () => {
     const formValues = formRenderer1.getCurrentValuesSnapshot();
     console.warn(formValues);
+    formValues.isLost = true;
+    formValues.timestamp = new Date().toISOString();
     delete formValues.formHeader;
 
     const operation = !activeDocumentId
@@ -147,6 +162,10 @@ const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
   const submitThirdForm = useCallback(async () => {
     const formValues = formRenderer3.getCurrentValuesSnapshot();
     console.warn(formValues);
+    const loggedInUser = authService.getLoggedInUser();
+    if (loggedInUser) {
+      formValues.ownerPhoto = loggedInUser.photoURL;
+    }
     delete formValues.formHeader3;
 
     if (!activeDocumentId) return;
