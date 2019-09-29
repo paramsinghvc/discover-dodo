@@ -1,13 +1,13 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import styled from "@emotion/styled";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import ListSubheader from "@material-ui/core/ListSubheader";
-import ApiService, { wrapOperation } from "shared/services/apiService";
 import Dog from "assets/dog.svg";
 import "./index.scss";
+import { PetInfoType } from "shared/types";
 
 const ListContainer = styled.div`
   position: fixed;
@@ -49,31 +49,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ListView: FC<{}> = (props: any) => {
+type ListProps = {
+  petDetails: Array<PetInfoType>;
+};
+
+const ListView: FC<ListProps> = (props: ListProps) => {
+  const { petDetails: petsList } = props;
   const classes = useStyles();
-  const { history } = props;
-  const [petsList, setPetsList] = useState<any>([]);
-  useEffect(() => {
-    (async function getUsers() {
-      const { response, error } = await wrapOperation(ApiService.getCollection)(
-        "pets"
-      );
-
-      if (response) {
-        const { docs } = response;
-        const dataSource: any = [];
-        docs.forEach(document => {
-          let petDocument = {};
-          petDocument = { ...document.data(), id: document.id };
-          dataSource.push(petDocument);
-        });
-
-        setPetsList(dataSource);
-      } else {
-        // console.error("Oops", error);
-      }
-    })();
-  }, []);
+  // const { history } = props;
 
   return (
     <>
@@ -102,19 +85,19 @@ const ListView: FC<{}> = (props: any) => {
 
           {petsList.map(tile => (
             <GridListTile key={tile.id} className={classes.gridTiles}>
-              {tile.imageURL ? (
-                <img src={tile.imageURL} alt={tile.id} />
+              {tile.photos ? (
+                <img src={tile.photos[0]} alt={tile.id} />
               ) : (
                 <img src={Dog} className={classes.image} alt="Species" />
               )}
               <GridListTileBar
-                title={tile.name}
+                title={tile.petName}
                 subtitle={
                   <div>
                     {tile.lastSeenAt && (
-                      <span> last seen at:{tile.lastSeenAt.locality}</span>
+                      <span> last seen at:{tile.lastSeenAt.address}</span>
                     )}
-                    {tile.breed && <span> breed:{tile.breed}</span>}
+                    {tile.petBreed && <span> breed:{tile.petBreed}</span>}
                     {/* {tile.lastSeenOn && (
                       <span> last Seen On:{tile.lastSeenOn}</span>
                     )} */}

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import MapComponent from "./components/GoogleMap";
@@ -14,7 +14,7 @@ const MapContainer = styled.div`
   z-index: -1;
 `;
 type MapProps = {
-  petDetails: PetInfoType;
+  petDetails: PetInfoType[];
 };
 
 const MapView = (props: MapProps) => {

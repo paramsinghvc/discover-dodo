@@ -6,7 +6,6 @@ import {
   InfoWindow
 } from "react-google-maps";
 import mapStyle from "./mapStyle";
-import { foundData, lostData } from "./data";
 import MapInfo from "../InfoWindow";
 import { PetInfoType } from "shared/types";
 
@@ -18,7 +17,7 @@ type CoordinatesType = {
 };
 
 type MapProps = {
-  petDetails: PetInfoType;
+  petDetails: PetInfoType[];
 };
 
 export const Map: React.FC<MapProps> = props => {
@@ -57,31 +56,31 @@ export const Map: React.FC<MapProps> = props => {
         } as any
       }
     >
-      {foundData.map(place => {
+      {props.petDetails.map(place => {
         return (
           <Marker
             key={place.id}
             position={{
-              lat: place.coordinates[0],
-              lng: place.coordinates[1]
+              lat: place.lastSeenAt.lat,
+              lng: place.lastSeenAt.long
             }}
             onClick={() => {
               setSelectedPlace(place);
             }}
             icon={{
-              url: "/pawprint-green.svg",
-              scaledSize: new (window as any).google.maps.Size(25, 25)
+              url: place.isLost ? "/pawprint-red.svg" : "/pawprint-green.svg",
+              scaledSize: new (window as any).google.maps.Size(30, 30)
             }}
           />
         );
       })}
-      {lostData.map(place => {
+      {/* {lostData.map(place => {
         return (
           <Marker
             key={place.id}
             position={{
-              lat: place.coordinates[0],
-              lng: place.coordinates[1]
+              lat: place.lastSeenAt.lat,
+              lng: place.lastSeenAt.long
             }}
             onClick={() => {
               setSelectedPlace(place);
@@ -92,12 +91,12 @@ export const Map: React.FC<MapProps> = props => {
             }}
           />
         );
-      })}
+      })} */}
       {selectedPlace && (
         <InfoWindow
           position={{
-            lat: selectedPlace.coordinates[0],
-            lng: selectedPlace.coordinates[1]
+            lat: selectedPlace.lastSeenAt.lat,
+            lng: selectedPlace.lastSeenAt.long
           }}
           onCloseClick={() => {
             setSelectedPlace(null);

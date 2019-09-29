@@ -21,30 +21,6 @@ import safeGet from "shared/utils/safeGet";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const petDetails1 = {
-  isLost: true,
-  isSpayed: false,
-  isVaccinated: true,
-  lastSeenAt: {
-    address: "Yelahanka, Bengaluru, Bangalore Urban",
-    lat: 13.1185614,
-    long: 77.59746169999994
-  },
-  ownerAddress: "#2/49,rudrana complex , bhartinagar yelahanaka bangalore",
-  ownerEmail: "vineetpanwar027@gmail.com",
-  ownerName: "vineet panwar",
-  ownerPhone: "8123307697",
-  petBreed: "african",
-  petColor: "black",
-  petGender: "Female",
-  petName: "cansandra",
-  petNotes: "she was  agile and cute",
-  petSpecies: "Cat",
-  photos: [],
-  reward: "",
-  timestamp: "2019-09-29T11:19:24.180Z"
-};
-
 const tutorialSteps = [
   {
     label: "San Francisco – Oakland Bay Bridge, United States",
@@ -107,7 +83,6 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const [petDetails, setPetDetails] = useState<any>([]);
-  const maxSteps = tutorialSteps.length;
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -136,56 +111,63 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
     })();
   }, []);
 
+  const maxSteps = safeGet(petDetails, "photos", []).length;
+
   return (
     <div className={classes.root}>
-      <AutoPlaySwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-        index={activeStep}
-        onChangeIndex={handleStepChange}
-        enableMouseEvents
-      >
-        {tutorialSteps.map((step, index) => (
-          <div key={step.label}>
-            {Math.abs(activeStep - index) <= 2 ? (
-              <div className={classes.imgContainer}>
-                <img
-                  className={classes.img}
-                  src={step.imgPath}
-                  alt={step.label}
-                />
-              </div>
-            ) : null}
-          </div>
-        ))}
-      </AutoPlaySwipeableViews>
-      <MobileStepper
-        steps={maxSteps}
-        position="static"
-        variant="dots"
-        activeStep={activeStep}
-        nextButton={
-          <Button
-            size="small"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
+      {maxSteps > 0 && (
+        <>
+          {" "}
+          <AutoPlaySwipeableViews
+            axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+            index={activeStep}
+            onChangeIndex={handleStepChange}
+            enableMouseEvents
           >
-            {theme.direction === "rtl" ? (
-              <KeyboardArrowLeft />
-            ) : (
-              <KeyboardArrowRight />
-            )}
-          </Button>
-        }
-        backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-            {theme.direction === "rtl" ? (
-              <KeyboardArrowRight />
-            ) : (
-              <KeyboardArrowLeft />
-            )}
-          </Button>
-        }
-      />
+            {safeGet(petDetails, "photos", []).map((step, index) => (
+              <div key={index}>
+                {Math.abs(activeStep - index) <= 2 ? (
+                  <div className={classes.imgContainer}>
+                    <img className={classes.img} src={step} alt={"hi"} />
+                  </div>
+                ) : null}
+              </div>
+            ))}
+          </AutoPlaySwipeableViews>
+          <MobileStepper
+            steps={maxSteps}
+            position="static"
+            variant="dots"
+            activeStep={activeStep}
+            nextButton={
+              <Button
+                size="small"
+                onClick={handleNext}
+                disabled={activeStep === maxSteps - 1}
+              >
+                {theme.direction === "rtl" ? (
+                  <KeyboardArrowLeft />
+                ) : (
+                  <KeyboardArrowRight />
+                )}
+              </Button>
+            }
+            backButton={
+              <Button
+                size="small"
+                onClick={handleBack}
+                disabled={activeStep === 0}
+              >
+                {theme.direction === "rtl" ? (
+                  <KeyboardArrowRight />
+                ) : (
+                  <KeyboardArrowLeft />
+                )}
+              </Button>
+            }
+          />{" "}
+        </>
+      )}
       <Grid container spacing={2} className={classes.descriptionArea}>
         <Grid item xs={9}>
           <Paper className={classes.descriptionBox} elevation={5}>
