@@ -25,7 +25,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  border-width: 2px;
+  border-width: 3px;
   border-radius: 10px;
   border-color: ${props => getColor(props)};
   border-style: dashed;
@@ -36,6 +36,11 @@ const Container = styled.div`
   transition: border 0.24s ease-in-out;
   margin-bottom: 20px;
   margin-top: 10px;
+  min-height: 150px;
+`;
+
+const InstructionText = styled.p`
+  margin-top: 70px;
 `;
 
 const ThumbsContainer = styled.aside({
@@ -167,7 +172,7 @@ const PhotosUploader: FC<{
     <Container {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
       <input {...getInputProps()} />
       {thumbs && thumbs.length === 0 ? (
-        <p>Upload Photos by drag n drop or click</p>
+        <InstructionText>Upload Photos by drag n drop or click</InstructionText>
       ) : (
         <ThumbsContainer>{thumbs}</ThumbsContainer>
       )}

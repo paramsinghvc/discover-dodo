@@ -11,20 +11,8 @@
                     "value": "Report Lost Pet",
                     "textAlign": "left",
                     "fontWeight": "fontWeightBold",
-                    "fontSize": "h4.fontSize",
+                    "fontSize": "h6.fontSize",
                     "pb": 2
-                }
-            },
-            {
-                "id": "photos",
-                "type": "PHOTOS_UPLOADER",
-                "meta": {
-                    "value": []
-                },
-                "events": {
-                    "onChange": {
-                        "type": "SET_VALUE"
-                    }
                 }
             },
             {
