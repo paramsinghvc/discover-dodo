@@ -36,6 +36,14 @@ class ApiService {
     if (!this.db) return;
     return await this.db.collection(collectionName).get();
   };
+
+  public getDocInCollection = async (collectionName: string, docId: string) => {
+    if (!this.db) return;
+    return await this.db
+      .collection(collectionName)
+      .doc(docId)
+      .get();
+  };
 }
 
 export default new ApiService();

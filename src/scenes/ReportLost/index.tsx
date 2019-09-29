@@ -15,7 +15,6 @@ import FORM_CONFIG_4 from "./config/reportLostStep4.json";
 import componentsMap from "./components";
 import ApiService, { wrapOperation } from "shared/services/apiService";
 import apiService from "shared/services/apiService";
-import DownloadLink from "./components/GeneratePdf";
 // import safeGet from "shared/utils/safeGet";
 // import Typography from "@material-ui/core/Typography";
 
@@ -41,6 +40,12 @@ function getSteps() {
 }
 
 const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeDocumentId, setActiveDocumentId] = React.useState<
+    firebase.firestore.DocumentReference["id"]
+  >();
+  const steps = getSteps();
+
   const formRenderer1 = useMemo(() => {
     return new ReactConfigRenderer(FORM_CONFIG_1 as IConfig, componentsMap, {
       // initialValues: initialValuesMap,
@@ -61,9 +66,10 @@ const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
         handleDownload({ event, id, value }) {
           console.warn(event, id, value);
         }
-      }
+      },
+      initialValues: new Map([["downloadButton", activeDocumentId]])
     });
-  }, []);
+  }, [activeDocumentId]);
 
   const RenderedFormJSX1 = useMemo<React.ElementType>(
     () => (formRenderer1 ? formRenderer1.render() : () => <></>),
@@ -81,12 +87,6 @@ const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
     () => (formRenderer4 ? formRenderer4.render() : () => <></>),
     [formRenderer4]
   );
-
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [activeDocumentId, setActiveDocumentId] = React.useState<
-    firebase.firestore.DocumentReference["id"]
-  >();
-  const steps = getSteps();
 
   const handleNext = useCallback(() => {
     if (activeStep === steps.length - 1) return;
@@ -224,7 +224,6 @@ const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
           {activeStep === steps.length - 1 ? "Finish" : "Next"}
         </Button>
       </Box>
-      <DownloadLink />
     </Container>
   );
 };
