@@ -11,7 +11,7 @@ import ReportLost from "scenes/Report/ReportLost";
 import ReportFound from "scenes/Report/ReportFound";
 import ApiService from "shared/services/apiService";
 import MapView from "scenes/MapView";
-import Details from "scenes/PetDescription";
+import Details from "scenes/PetDetails";
 import storageService from "shared/services/storageService";
 
 const store = createStore();

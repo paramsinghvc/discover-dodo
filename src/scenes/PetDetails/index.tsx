@@ -254,20 +254,19 @@ function SwipeableTextMobileStepper() {
                 >
                   {PetInfo.reward}
                 </Typography>
+                <Divider variant="middle" />
               </>
             ) : null}
-            <Divider variant="middle" />
-            {PetInfo.info ? (
-              <Typography
-                variant="body2"
-                align="left"
-                className={classes.subHeaderText}
-              >
-                {PetInfo.info}
-              </Typography>
-            ) : (
-              "hi"
-            )}
+
+            <Typography
+              variant="body2"
+              align="left"
+              className={classes.subHeaderText}
+            >
+              {PetInfo.info
+                ? PetInfo.info
+                : `Please help find the lost ${PetInfo.species}.`}
+            </Typography>
           </Paper>
         </Grid>
       </Grid>

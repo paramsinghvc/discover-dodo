@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useCallback, memo } from "react";
+import React, { FC, useMemo, useCallback, memo, useEffect } from "react";
 import { ReactConfigRenderer, IConfig } from "@mollycule/mason";
 import styled from "@emotion/styled";
 import Button from "@material-ui/core/Button";
@@ -13,8 +13,8 @@ import FORM_CONFIG_2 from "./config/reportFoundStep2.json";
 import FORM_CONFIG_3 from "./config/reportFoundStep3.json";
 import FORM_CONFIG_4 from "./config/reportFoundStep4.json";
 import componentsMap from "../components";
-import ApiService, { wrapOperation } from "shared/services/apiService";
-import apiService from "shared/services/apiService";
+import apiService, { wrapOperation } from "shared/services/apiService";
+import authService from "shared/services/authService";
 // import safeGet from "shared/utils/safeGet";
 // import Typography from "@material-ui/core/Typography";
 
@@ -58,6 +58,19 @@ const ReportFound: FC<{} & RouteComponentProps> = ({ history }) => {
   const formRenderer4 = useMemo(() => {
     return new ReactConfigRenderer(FORM_CONFIG_4 as IConfig, componentsMap);
   }, [activeDocumentId]);
+
+  useEffect(() => {
+    authService.onAuthStateChanged(user => {
+      const valuesMap = new Map();
+      if (user) {
+        const { displayName, email, phoneNumber } = user;
+        valuesMap.set("yourName", displayName);
+        valuesMap.set("yourEmail", email);
+        phoneNumber && valuesMap.set("yourPhone", phoneNumber);
+        formRenderer3.setValue(valuesMap);
+      }
+    });
+  }, [formRenderer3]);
 
   const RenderedFormJSX1 = useMemo<React.ElementType>(
     () => (formRenderer1 ? formRenderer1.render() : () => <></>),
@@ -137,6 +150,11 @@ const ReportFound: FC<{} & RouteComponentProps> = ({ history }) => {
   const submitThirdForm = useCallback(async () => {
     const formValues = formRenderer3.getCurrentValuesSnapshot();
     console.warn(formValues);
+    const loggedInUser = authService.getLoggedInUser();
+    if (loggedInUser) {
+      formValues.userPhoto = loggedInUser.photoURL;
+    }
+
     delete formValues.formHeader3;
 
     if (!activeDocumentId) return;

@@ -23,6 +23,12 @@ const Holder = styled.section`
   }
 `;
 
+const StyledImg = styled.img`
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+`;
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
@@ -92,9 +98,16 @@ export default function ButtonAppBar() {
           </Holder>
           <ButtonSection ref={buttonSectionRef}>
             {loggedInUser ? (
-              <Button color="inherit" onClick={toggleProfileMenu}>
-                {loggedInUser.displayName}
-              </Button>
+              loggedInUser.photoURL ? (
+                <StyledImg
+                  src={loggedInUser.photoURL}
+                  onClick={toggleProfileMenu}
+                />
+              ) : (
+                <Button color="inherit" onClick={toggleProfileMenu}>
+                  {loggedInUser.displayName}
+                </Button>
+              )
             ) : (
               <Button color="inherit" onClick={handleLogin}>
                 Login
