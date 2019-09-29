@@ -5,12 +5,11 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
-
 import mapStyle from "./mapStyle";
 import { foundData, lostData } from "./data";
-import { Paper } from "@material-ui/core";
+import MapInfo from "../InfoWindow";
 
-const DEFAULT_ZOOM = 10;
+const DEFAULT_ZOOM = 12;
 
 type CoordinatesType = {
   lat: number;
@@ -20,8 +19,8 @@ type CoordinatesType = {
 export function Map(props: any) {
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
   const [currentLocation, setCurrentLocation] = useState<CoordinatesType>({
-    lat: 0,
-    lng: 0
+    lat: 12.971599,
+    lng: 77.594566
   });
 
   const getPosition = useCallback(position => {
@@ -100,11 +99,12 @@ export function Map(props: any) {
           }}
           options={
             {
-              style: { opacity: 0.2 }
+              style: { overflow: "hidden" },
+              pixelOffset: new (window as any).google.maps.Size(0, -20)
             } as any
           }
         >
-          <Paper>Pet info goes here</Paper>
+          <MapInfo />
         </InfoWindow>
       )}
     </GoogleMap>

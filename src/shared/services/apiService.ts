@@ -20,6 +20,18 @@ class ApiService {
     return await this.db.collection(collectionName).add(data);
   };
 
+  public updateDocInCollection = async (
+    collectionName: string,
+    docId: string,
+    data: any
+  ) => {
+    if (!this.db) return;
+    return await this.db
+      .collection(collectionName)
+      .doc(docId)
+      .update(data);
+  };
+
   public getCollection = async (collectionName: string) => {
     if (!this.db) return;
     return await this.db.collection(collectionName).get();

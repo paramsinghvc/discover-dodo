@@ -1,0 +1,73 @@
+{
+    "page": "REPORT_LOST3",
+    "config": {
+        "id": "formLayoutHolder3",
+        "type": "FORM_LAYOUT_HOLDER",
+        "children": [
+            {
+                "id": "formHeader3",
+                "type": "FORM_HEADER",
+                "meta": {
+                    "value": "Add owner Info",
+                    "textAlign": "left",
+                    "fontWeight": "fontWeightBold",
+                    "fontSize": "h6.fontSize",
+                    "pb": 2
+                }
+            },
+            {
+                "id": "ownerName",
+                "type": "TEXTFIELD",
+                "meta": {
+                    "label": "Owner Name",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "autoFocus": true,
+                    "margin": "normal",
+                    "value": ""
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
+                "id": "ownerAddress",
+                "type": "TEXTFIELD",
+                "meta": {
+                    "label": "Owner Address",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "autoFocus": true,
+                    "margin": "normal",
+                    "value": "",
+                    "rows": 4,
+                    "multiline": true
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
+                "id": "ownerPhone",
+                "type": "TEXTFIELD",
+                "meta": {
+                    "label": "Owner Phone",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "autoFocus": true,
+                    "margin": "normal",
+                    "value": ""
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            }
+        ]
+    }
+}
