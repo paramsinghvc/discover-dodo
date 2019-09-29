@@ -42,6 +42,7 @@
                     "autoFocus": true,
                     "margin": "normal",
                     "value": "",
+                    "rows": 4,
                     "multiline": true
                 },
                 "events": {

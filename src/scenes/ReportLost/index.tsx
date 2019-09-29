@@ -55,7 +55,13 @@ const ReportLost: FC<{} & RouteComponentProps> = ({ history }) => {
   }, []);
 
   const formRenderer4 = useMemo(() => {
-    return new ReactConfigRenderer(FORM_CONFIG_4 as IConfig, componentsMap);
+    return new ReactConfigRenderer(FORM_CONFIG_4 as IConfig, componentsMap, {
+      dataProcessors: {
+        handleDownload({ event, id, value }) {
+          console.warn(event, id, value);
+        }
+      }
+    });
   }, []);
 
   const RenderedFormJSX1 = useMemo<React.ElementType>(

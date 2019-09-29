@@ -28,6 +28,14 @@
                 "meta": {
                     "value": "Download Pamphlet",
                     "size": "large"
+                },
+                "events": {
+                    "onClick": {
+                        "type": "CUSTOM",
+                        "meta": {
+                            "name": "handleDownload"
+                        }
+                    }
                 }
             }
         ]
