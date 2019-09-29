@@ -10,6 +10,7 @@ const MapContainer = styled.div`
   right: 0;
   left: 0;
   padding-top: 64px;
+  z-index: -1;
 `;
 
 const MapView: FC<{}> = () => {

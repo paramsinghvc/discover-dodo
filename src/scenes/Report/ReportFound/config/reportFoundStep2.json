@@ -1,0 +1,50 @@
+{
+    "page": "REPORT_LOST2",
+    "config": {
+        "id": "formLayoutHolder2",
+        "type": "FORM_LAYOUT_HOLDER",
+        "children": [
+            {
+                "id": "formHeader2",
+                "type": "FORM_HEADER",
+                "meta": {
+                    "value": "Add more Info",
+                    "textAlign": "left",
+                    "fontWeight": "fontWeightBold",
+                    "fontSize": "h6.fontSize",
+                    "pb": 2
+                }
+            },
+            {
+                "id": "photos",
+                "type": "PHOTOS_UPLOADER",
+                "meta": {
+                    "value": []
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
+                "id": "petNotes",
+                "type": "TEXTFIELD",
+                "meta": {
+                    "label": "Pet Info",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "margin": "normal",
+                    "value": "",
+                    "multiline": true,
+                    "rows": 6
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            }
+        ]
+    }
+}

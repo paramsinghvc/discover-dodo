@@ -9,10 +9,19 @@ import MenuIcon from "@material-ui/icons/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
 
 import AuthService from "shared/services/authService";
 
 const ButtonSection = styled.section``;
+
+const Holder = styled.section`
+  display: flex;
+  justify-content: flex-start;
+  > * {
+    margin-right: 30px;
+  }
+`;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +32,12 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
-    textAlign: "left"
+    textAlign: "left",
+    cursor: "pointer"
+  },
+  menus: {
+    fontSize: "16px",
+    cursor: "pointer"
   }
 }));
 
@@ -66,8 +80,16 @@ export default function ButtonAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Pawsome
+            <Link to={{ pathname: `/` }}>Pawsome</Link>
           </Typography>
+          <Holder>
+            <Typography variant="h6" className={classes.menus}>
+              <Link to={{ pathname: `/report/lost` }}>Report Lost</Link>
+            </Typography>
+            <Typography variant="h6" className={classes.menus}>
+              <Link to={{ pathname: `/report/found` }}>Report Found</Link>
+            </Typography>
+          </Holder>
           <ButtonSection ref={buttonSectionRef}>
             {loggedInUser ? (
               <Button color="inherit" onClick={toggleProfileMenu}>
