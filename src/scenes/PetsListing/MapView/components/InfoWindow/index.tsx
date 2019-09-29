@@ -9,6 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
+import { PetInfoType } from "shared/types";
 
 const useStyles = makeStyles({
   bigAvatar: {
@@ -22,11 +23,16 @@ const useStyles = makeStyles({
   }
 });
 
-export const MapInfo = props => {
+type mapInfoType = {
+  petDetails: PetInfoType;
+};
+export const MapInfo = (props: mapInfoType) => {
   const classes = useStyles();
-
+  // eslint-disable-next-line no-console
+  console.log(props);
   const handleNameClick = useCallback(() => {
     console.warn("go to history page");
+    // props.history.push(`/details/${}`)
   }, []);
   return (
     <Paper className={classes.paper}>

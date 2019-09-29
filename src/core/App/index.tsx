@@ -16,7 +16,8 @@ import ReportLost from "scenes/Report/ReportLost";
 import ReportFound from "scenes/Report/ReportFound";
 import ApiService from "shared/services/apiService";
 import PetsListing from "scenes/PetsListing";
-import Details from "scenes/PetDescription";
+import MapView from "scenes/PetsListing/MapView";
+import Details from "scenes/PetDetails";
 import storageService from "shared/services/storageService";
 import About from "scenes/About";
 
@@ -41,7 +42,8 @@ const App: React.FC = () => {
               <Route exact path="/" component={PetsListing} />
               <Route exact path="/report/lost" component={ReportLost} />
               <Route exact path="/report/found" component={ReportFound} />
-              <Route exact path="/details" component={Details} />
+              <Route exact path="/map" component={MapView} />
+              <Route exact path="/details/:id" component={Details} />
               <Route exact path="/about" component={About} />
               {/* <Route render={() => <Redirect to="/" />} /> */}
             </Switch>
