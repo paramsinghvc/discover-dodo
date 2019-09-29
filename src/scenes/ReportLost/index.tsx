@@ -25,6 +25,10 @@ const Container = styled.section`
 // import ApiService, { wrapOperation } from "shared/services/apiService";
 // import safeGet from "shared/utils/safeGet";
 
+const DisplaySection = styled.section<{ show: boolean }>`
+  display: ${({ show }) => (show ? "block" : "none")};
+`;
+
 function getSteps() {
   return [
     "Enter Pet Details",
@@ -73,29 +77,30 @@ const ReportLost: FC<{}> = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
-  const getStepContent = useCallback(
-    (stepIndex: number) => {
-      switch (stepIndex) {
-        case 0:
-          return RenderedFormJSX1;
-        case 1:
-          return RenderedFormJSX2;
-        case 2:
-          return RenderedFormJSX3;
-        default:
-          return RenderedFormJSX4;
-      }
-    },
-    [RenderedFormJSX1, RenderedFormJSX2, RenderedFormJSX3, RenderedFormJSX4]
-  );
+  // const getStepContent = useCallback(
+  //   (stepIndex: number) => {
+  //     switch (stepIndex) {
+  //       case 0:
+  //         return RenderedFormJSX1;
+  //       case 1:
+  //         return RenderedFormJSX2;
+  //       case 2:
+  //         return RenderedFormJSX3;
+  //       default:
+  //         return RenderedFormJSX4;
+  //     }
+  //   },
+  //   [RenderedFormJSX1, RenderedFormJSX2, RenderedFormJSX3, RenderedFormJSX4]
+  // );
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
+    if (activeStep === steps.length - 1) return;
     setActiveStep(prevActiveStep => prevActiveStep + 1);
-  };
+  }, [activeStep, steps]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
-  };
+  }, [setActiveStep]);
 
   // const handleReset = () => {
   //   setActiveStep(0);
@@ -106,7 +111,7 @@ const ReportLost: FC<{}> = () => {
       console.warn(formRenderer1.getCurrentValuesSnapshot());
       handleNext();
     }
-  }, [formRenderer1]);
+  }, [formRenderer1, handleNext]);
 
   return (
     <Container>
@@ -117,7 +122,20 @@ const ReportLost: FC<{}> = () => {
           </Step>
         ))}
       </Stepper>
-      {React.createElement(getStepContent(activeStep))}
+      {/* {React.createElement(getStepContent(activeStep))} */}
+      <DisplaySection show={activeStep === 0}>
+        <RenderedFormJSX1 />
+      </DisplaySection>
+      <DisplaySection show={activeStep === 1}>
+        <RenderedFormJSX2 />
+      </DisplaySection>
+      <DisplaySection show={activeStep === 2}>
+        <RenderedFormJSX3 />
+      </DisplaySection>
+      <DisplaySection show={activeStep === 3}>
+        <RenderedFormJSX4 />
+      </DisplaySection>
+
       <Box mt={4} textAlign="right">
         <Button
           color="secondary"
