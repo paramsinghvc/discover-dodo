@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
@@ -40,13 +41,15 @@ export const MapInfo = (props: mapInfoType) => {
   return (
     <Paper className={classes.paper}>
       <Box fontWeight="fontWeightBold" bgcolor="secondary.main" p={5} m={-4}>
-        <Typography
-          variant="h6"
-          onClick={handleNameClick}
-          className={classes.header}
-        >
-          {selectedPet.petName}
-        </Typography>
+        <Link to={`/details/${selectedPet.id}`} key={selectedPet.id}>
+          <Typography
+            variant="h6"
+            onClick={handleNameClick}
+            className={classes.header}
+          >
+            {selectedPet.petName}
+          </Typography>
+        </Link>
       </Box>
       <Grid container justify="center" alignItems="center">
         <Avatar
