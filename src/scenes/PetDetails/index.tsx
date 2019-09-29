@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState, useEffect } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import MobileStepper from "@material-ui/core/MobileStepper";
@@ -22,6 +21,7 @@ import ApiService, { wrapOperation } from "shared/services/apiService";
 import safeGet from "shared/utils/safeGet";
 import ProfileIcon from "assets/Profile-512.png";
 import PlaceholderImg from "assets/placeholder-gray.png";
+import Map from "./IntegratedMap";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,7 +43,12 @@ const useStyles = makeStyles(theme => ({
   },
 
   descriptionBox: {
-    padding: "10px"
+    padding: "10px",
+    marginTop: "10px"
+  },
+  mapBox: {
+    marginTop: "10px",
+    height: "150px"
   },
 
   headerText: {
@@ -72,6 +77,7 @@ const Carousel = styled.section`
   max-height: 300px;
   background: rgba(0, 0, 0, 0.7);
   border-radius: 5px;
+  margin-bottom: 10px;
 `;
 
 const CarouselImg = styled.img`
@@ -200,7 +206,7 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
             </Typography>
             <Divider variant="middle" />
             <Typography
-              variant="body2"
+              variant="body1"
               align="left"
               className={classes.descriptionText}
             >
@@ -212,22 +218,13 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
             <Divider variant="middle" />
 
             {petDetails.reward ? (
-              <>
-                <Typography
-                  variant="h5"
-                  align="center"
-                  // className={classes.headerText}
-                >
-                  Reward
-                </Typography>
-                <Typography
-                  variant="h5"
-                  align="center"
-                  // className={classes.headerText}
-                >
-                  {petDetails.reward}
-                </Typography>
-              </>
+              <Typography
+                variant="body1"
+                align="left"
+                className={classes.descriptionText}
+              >
+                Reward: {petDetails.reward}
+              </Typography>
             ) : (
               <Typography
                 variant="body2"
@@ -281,6 +278,13 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
                 </TableBody>
               </Table>
             </Box>
+          </Paper>
+          <Paper elevation={5} className={classes.mapBox}>
+            <Map
+              petInfo={petDetails}
+              containerElement={<div style={{ height: "100%" }} />}
+              mapElement={<div style={{ height: "100%" }} />}
+            />
           </Paper>
         </Grid>
       </Grid>
