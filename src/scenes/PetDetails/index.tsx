@@ -17,6 +17,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
 import styled from "@emotion/styled";
 import Avatar from "@material-ui/core/Avatar";
+import { GoogleMap, withGoogleMap } from "react-google-maps";
 
 import ApiService, { wrapOperation } from "shared/services/apiService";
 import safeGet from "shared/utils/safeGet";
@@ -43,7 +44,8 @@ const useStyles = makeStyles(theme => ({
   },
 
   descriptionBox: {
-    padding: "10px"
+    padding: "10px",
+    marginTop: "10px"
   },
 
   headerText: {
@@ -72,6 +74,7 @@ const Carousel = styled.section`
   max-height: 300px;
   background: rgba(0, 0, 0, 0.7);
   border-radius: 5px;
+  margin-bottom: 10px;
 `;
 
 const CarouselImg = styled.img`
@@ -212,22 +215,13 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
             <Divider variant="middle" />
 
             {petDetails.reward ? (
-              <>
-                <Typography
-                  variant="h5"
-                  align="center"
-                  // className={classes.headerText}
-                >
-                  Reward
-                </Typography>
-                <Typography
-                  variant="h5"
-                  align="center"
-                  // className={classes.headerText}
-                >
-                  {petDetails.reward}
-                </Typography>
-              </>
+              <Typography
+                variant="h5"
+                align="left"
+                className={classes.descriptionText}
+              >
+                Reward: {petDetails.reward}
+              </Typography>
             ) : (
               <Typography
                 variant="body2"
@@ -282,6 +276,27 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
               </Table>
             </Box>
           </Paper>
+          {/* <Paper elevation={5} className={classes.descriptionBox}>
+            {() =>
+              withGoogleMap(
+                <GoogleMap
+                  defaultZoom={10}
+                  center={{
+                    lat: safeGet(petDetails, "lastSeenAt.lat", 0),
+                    lng: safeGet(petDetails, "lastSeenAt.long", 0)
+                  }}
+                  defaultOptions={
+                    {
+                      fullscreenControl: false,
+                      panControl: false,
+                      streetViewControl: false,
+                      mapTypeControl: false
+                    } as any
+                  }
+                />
+              )
+            }
+          </Paper> */}
         </Grid>
       </Grid>
     </div>
