@@ -21,6 +21,8 @@ import ApiService, { wrapOperation } from "shared/services/apiService";
 import safeGet from "shared/utils/safeGet";
 import ProfileIcon from "assets/Profile-512.png";
 import PlaceholderImg from "assets/placeholder-gray.png";
+import Vaccination from "assets/syringe.svg";
+import Spayed from "assets/neuter.svg";
 import Map from "./IntegratedMap";
 
 const useStyles = makeStyles(theme => ({
@@ -48,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     overflow: "hidden"
   },
   mapBox: {
-    marginTop: "10px",
+    marginTop: "16px",
     height: "150px"
   },
 
@@ -72,13 +74,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Carousel = styled.section`
-  width: 100%;
+  width: calc(100% - 8px);
   position: relative;
   height: 300px;
   max-height: 300px;
   background: rgba(0, 0, 0, 0.7);
   border-radius: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
+  margin-left: 5px;
 `;
 
 const CarouselImg = styled.img`
@@ -92,6 +95,20 @@ const StyledMobileStepper = styled(MobileStepper)`
   bottom: 0;
   width: calc(100% - 16px);
   background: rgba(202, 202, 202, 0.4);
+`;
+
+const Switches = styled.section`
+  display: flex;
+  padding: 0 17px 20px 17px;
+  align-items: center;
+  font-size: 14px;
+  > img {
+    height: 20px;
+    margin-right: 10px;
+    &:last-of-type {
+      margin-left: 20px;
+    }
+  }
 `;
 
 export const PetDetails: React.FC<RouteComponentProps> = ({
@@ -197,6 +214,14 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
                 <span> &#8226; </span>
                 {petDetails.petGender}
               </Typography>
+              {petDetails.isLost && (
+                <Switches>
+                  <img src={Vaccination} alt="is vaccinated" />
+                  Vaccinated: {petDetails.isVaccinated ? "Yes" : "No"}
+                  <img src={Spayed} alt="is neutered" /> Neutered:{" "}
+                  {petDetails.isSpayed ? "Yes" : "No"}
+                </Switches>
+              )}
             </Box>
             <Divider variant="middle" />
             <Typography
