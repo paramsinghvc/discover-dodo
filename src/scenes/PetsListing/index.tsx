@@ -6,7 +6,7 @@ import MapView from "./MapView";
 import ListView from "./ListView";
 
 const PetsListing: FC<{} & RouteComponentProps> = ({ history }) => {
-  const [activeView, setActiveView] = useState(0);
+  const [activeView, setActiveView] = useState(1);
   const handleViewChange = useCallback((view: number) => {
     setActiveView(view);
   }, []);
