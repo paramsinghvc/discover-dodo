@@ -1,9 +1,6 @@
 import React, { FC } from "react";
 import styled from "@emotion/styled";
 
-import MapComponent from "core/components/GoogleMap";
-import ContentHeadSection from "core/components/ContentHead";
-
 const AboutContainer = styled.div`
   position: fixed;
   top: 0;

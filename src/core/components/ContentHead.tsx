@@ -18,7 +18,9 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "center"
+    alignItems: "center",
+    position: "sticky",
+    zIndex: 3
   },
   filterToggle: {
     width: "2rem",
@@ -42,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   views: {
     marginLeft: "auto",
-    marginRight: "2%"
+    marginRight: "4%"
   },
   listViewButton: {},
   mapViewButton: {},

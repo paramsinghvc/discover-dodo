@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import styled from "@emotion/styled";
 
-import MapComponent from "core/components/GoogleMap";
+import MapComponent from "scenes/MapView/components/GoogleMap";
 import ContentHeadSection from "core/components/ContentHead";
 
 const MapContainer = styled.div`

@@ -44,13 +44,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
- 
+
 .MuiInputLabel-outlined.MuiInputLabel-shrink {
   background: white;
   padding: 0 2px;
 }
 
-.gm-style .gm-style-iw-t::after{
+.gm-style .gm-style-iw-t::after {
   height: 5px;
   width: 5px;
 }
@@ -61,4 +61,8 @@ code {
 
 .gm-style-iw-d {
   overflow: hidden !important;
+}
+
+.MuiGridListTile-tile {
+  width: "100% !important";
 }
