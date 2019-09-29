@@ -11,26 +11,17 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import Grid from "@material-ui/core/Grid";
 import TableBody from "@material-ui/core/TableBody";
+import Box from "@material-ui/core/Box";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
 import styled from "@emotion/styled";
+import Avatar from "@material-ui/core/Avatar";
 
 import ApiService, { wrapOperation } from "shared/services/apiService";
 import safeGet from "shared/utils/safeGet";
-
-const tutorialSteps = [
-  {
-    label: "San Francisco – Oakland Bay Bridge, United States",
-    imgPath:
-      "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60"
-  },
-  {
-    label: "Bird",
-    imgPath:
-      "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60"
-  }
-];
+import ProfileIcon from "assets/Profile-512.png";
+import PlaceholderImg from "assets/placeholder-gray.png";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,50 +31,52 @@ const useStyles = makeStyles(theme => ({
     maxWidth: "50%",
     minWidth: 400
   },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    height: 50,
-    paddingLeft: theme.spacing(4),
-    backgroundColor: theme.palette.background.default
-  },
+
   img: {
     height: 255,
     maxWidth: 400,
     overflow: "hidden"
   },
-  imgContainer: {
-    margin: "auto"
-  },
+
   descriptionArea: {
     padding: 5
   },
+
   descriptionBox: {
     padding: "10px"
   },
+
   headerText: {
-    color: "rgba(0, 0, 0, 0.85)"
+    color: "rgba(0, 0, 0, 0.85)",
+    padding: "20px"
   },
-  subHeaderText: {
-    color: "rgba(0, 0, 0, 0.8)",
-    fontWeight: "lighter",
-    padding: " 20px "
-  },
+
   descriptionText: {
     color: "rgba(0, 0, 0, 0.8)",
     fontWeight: "normal",
     padding: " 20px "
+  },
+
+  avatar: {
+    margin: "auto",
+    width: 60,
+    height: 60,
+    filter: "grayscale(100%)"
   }
 }));
 
 const Carousel = styled.section`
-  width: 50%;
+  width: 100%;
   position: relative;
+  height: "fit-content";
   max-height: 300px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
 `;
 
 const CarouselImg = styled.img`
-  width: 100%;
+  width: "fit-content";
+  max-height: 300px;
 `;
 
 const StyledMobileStepper = styled(MobileStepper)`
@@ -111,10 +104,6 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
-  const handleStepChange = step => {
-    setActiveStep(step);
-  };
-
   useEffect(() => {
     (async function getUsers() {
       const { response, error } = await wrapOperation(
@@ -130,14 +119,16 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
     })();
   }, []);
 
-  const maxSteps = safeGet(petDetails, "photos", []).length;
+  const maxSteps = safeGet(petDetails, "photos", []).length || 1;
 
   return (
     <div className={classes.root}>
       {maxSteps > 0 && (
         <>
           <Carousel>
-            <CarouselImg src={tutorialSteps[activeStep].imgPath} />
+            <CarouselImg
+              src={safeGet(petDetails, `photos[${activeStep}]`, PlaceholderImg)}
+            />
 
             <StyledMobileStepper
               steps={maxSteps}
@@ -175,28 +166,30 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
         </>
       )}
       <Grid container spacing={2} className={classes.descriptionArea}>
-        <Grid item xs={9}>
+        <Grid item xs={7}>
           <Paper className={classes.descriptionBox} elevation={5}>
-            <Typography
-              variant="h3"
-              align="left"
-              className={classes.headerText}
-            >
-              {petDetails.petName}
-            </Typography>
-            <Typography
-              variant="h5"
-              align="left"
-              className={classes.descriptionText}
-            >
-              {petDetails.petSpecies}
-              <span> &#8226; </span>
-              {petDetails.petBreed}
-              <span> &#8226; </span>
-              {petDetails.petColor}
-              <span> &#8226; </span>
-              {petDetails.petGender}
-            </Typography>
+            <Box bgcolor={theme.palette.secondary.light}>
+              <Typography
+                variant="h3"
+                align="left"
+                className={classes.headerText}
+              >
+                {petDetails.petName}
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                align="left"
+                className={classes.descriptionText}
+              >
+                {petDetails.petSpecies}
+                <span> &#8226; </span>
+                {petDetails.petBreed}
+                <span> &#8226; </span>
+                {petDetails.petColor}
+                <span> &#8226; </span>
+                {petDetails.petGender}
+              </Typography>
+            </Box>
             <Divider variant="middle" />
             <Typography
               variant="body2"
@@ -207,7 +200,7 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
             </Typography>
             <Divider variant="middle" />
             <Typography
-              variant="subtitle1"
+              variant="body2"
               align="left"
               className={classes.descriptionText}
             >
@@ -216,66 +209,78 @@ export const PetDetails: React.FC<RouteComponentProps> = ({
                 ? petDetails.petNotes
                 : `Please help find the lost ${petDetails.petSpecies}.`}
             </Typography>
-            <Table size={"small"}>
-              <TableBody>
-                <TableRow key={1}>
-                  <TableCell align="left" variant={"head"}>
-                    Owner:
-                  </TableCell>
-                  <TableCell align="left">
-                    {petDetails.ownerName || petDetails.yourName}
-                  </TableCell>
-                </TableRow>
-                <TableRow key={2}>
-                  <TableCell align="left" variant={"head"}>
-                    Address:
-                  </TableCell>
-                  <TableCell align="left">
-                    {petDetails.ownerAddress || petDetails.yourAddress}
-                  </TableCell>
-                </TableRow>
-                <TableRow key={3}>
-                  <TableCell align="left" variant={"head"}>
-                    Contact:
-                  </TableCell>
-                  <TableCell align="left">
-                    {petDetails.ownerPhone ||
-                      petDetails.yourPhone ||
-                      petDetails.ownerEmail ||
-                      petDetails.yourEmail}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-            <Typography
-              variant="subtitle2"
-              align="left"
-              className={classes.descriptionText}
-            ></Typography>
-          </Paper>
-        </Grid>
+            <Divider variant="middle" />
 
-        <Grid item xs={3}>
-          <Paper elevation={5} className={classes.descriptionBox}>
             {petDetails.reward ? (
               <>
                 <Typography
                   variant="h5"
                   align="center"
-                  className={classes.headerText}
+                  // className={classes.headerText}
                 >
                   Reward
                 </Typography>
                 <Typography
                   variant="h5"
                   align="center"
-                  className={classes.headerText}
+                  // className={classes.headerText}
                 >
                   {petDetails.reward}
                 </Typography>
-                <Divider variant="middle" />
               </>
-            ) : null}
+            ) : (
+              <Typography
+                variant="body2"
+                align="left"
+                className={classes.descriptionText}
+              >
+                Please help reunite {petDetails.petName} with{" "}
+                {petDetails.petGender === "Male" ? "his" : "her"} family.
+              </Typography>
+            )}
+          </Paper>
+        </Grid>
+
+        <Grid item xs={5}>
+          <Paper elevation={5} className={classes.descriptionBox}>
+            <Avatar
+              alt="Remy Sharp"
+              src={petDetails.ownerPhoto || ProfileIcon}
+              className={classes.avatar}
+            />
+            <Box overflow="auto">
+              <Table size={"small"}>
+                <TableBody>
+                  <TableRow key={1}>
+                    <TableCell align="left" variant={"head"}>
+                      Owner:
+                    </TableCell>
+                    <TableCell align="left">
+                      {petDetails.ownerName || petDetails.yourName}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow key={2}>
+                    <TableCell align="left" variant={"head"}>
+                      Address:
+                    </TableCell>
+                    <TableCell align="left">
+                      {petDetails.ownerAddress || petDetails.yourAddress}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow key={3}>
+                    <TableCell align="left" variant={"head"}>
+                      Contact:
+                    </TableCell>
+                    <TableCell align="left">
+                      {petDetails.ownerPhone ||
+                        petDetails.yourPhone ||
+                        petDetails.ownerEmail ||
+                        petDetails.yourEmail}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Box>
           </Paper>
         </Grid>
       </Grid>

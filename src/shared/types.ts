@@ -28,4 +28,5 @@ export type PetInfoType = {
   photos: Array<any>;
   reward: string;
   timestamp: string;
+  ownerPhoto: string;
 };
