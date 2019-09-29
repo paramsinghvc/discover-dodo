@@ -8,6 +8,7 @@ import {
 import mapStyle from "./mapStyle";
 import { foundData, lostData } from "./data";
 import MapInfo from "../InfoWindow";
+import { PetInfoType } from "shared/types";
 
 const DEFAULT_ZOOM = 12;
 
@@ -16,7 +17,11 @@ type CoordinatesType = {
   lng: number;
 };
 
-export function Map(props: any) {
+type MapProps = {
+  petDetails: PetInfoType;
+};
+
+export const Map: React.FC<MapProps> = props => {
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
   const [currentLocation, setCurrentLocation] = useState<CoordinatesType>({
     lat: 12.971599,
@@ -104,12 +109,12 @@ export function Map(props: any) {
             } as any
           }
         >
-          <MapInfo />
+          <MapInfo petDetails={selectedPlace} />
         </InfoWindow>
       )}
     </GoogleMap>
   );
-}
+};
 
 const MapComponent = withGoogleMap(Map);
 export default MapComponent;
