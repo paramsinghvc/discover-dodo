@@ -22,6 +22,7 @@ const LabelledRadioGroup: FC<
       css={css`
         text-align: left;
         display: flex;
+        margin-top: 30px;
       `}
     >
       <FormLabel
@@ -39,6 +40,9 @@ const LabelledRadioGroup: FC<
             value={label}
             control={<Radio />}
             label={label}
+            css={css`
+              margin-right: 45px;
+            `}
           />
         ))}
       </RadioGroup>

@@ -15,11 +15,13 @@ import createStore from "../utils/createStore";
 import ReportLost from "scenes/ReportLost";
 import ApiService from "shared/services/apiService";
 import MapView from "scenes/MapView";
+import storageService from "shared/services/storageService";
 
 const store = createStore();
 const { Provider } = createStoreContext<any>();
 
 ApiService.initFirebase();
+storageService.initStorage();
 
 const App: React.FC = () => {
   // useEffect(() => {

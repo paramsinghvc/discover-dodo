@@ -16,6 +16,18 @@
                 }
             },
             {
+                "id": "photos",
+                "type": "PHOTOS_UPLOADER",
+                "meta": {
+                    "value": []
+                },
+                "events": {
+                    "onChange": {
+                        "type": "SET_VALUE"
+                    }
+                }
+            },
+            {
                 "id": "petName",
                 "type": "TEXTFIELD",
                 "meta": {
@@ -23,7 +35,8 @@
                     "variant": "outlined",
                     "fullWidth": true,
                     "autoFocus": true,
-                    "margin": "normal"
+                    "margin": "normal",
+                    "value": ""
                 },
                 "events": {
                     "onChange": {
@@ -43,7 +56,8 @@
                         "Others"
                     ],
                     "label": "Species",
-                    "row": true
+                    "row": true,
+                    "value": "Dog"
                 },
                 "events": {
                     "onChange": {
@@ -58,7 +72,8 @@
                     "label": "Breed",
                     "variant": "outlined",
                     "fullWidth": true,
-                    "margin": "normal"
+                    "margin": "normal",
+                    "value": ""
                 },
                 "events": {
                     "onChange": {
@@ -73,7 +88,8 @@
                     "label": "Color",
                     "variant": "outlined",
                     "fullWidth": true,
-                    "margin": "normal"
+                    "margin": "normal",
+                    "value": ""
                 },
                 "events": {
                     "onChange": {
@@ -85,7 +101,11 @@
                 "id": "lastSeenAt",
                 "type": "LOCATION_INPUT",
                 "meta": {
-                    "label": "Last Seen At"
+                    "label": "Last Seen At",
+                    "variant": "outlined",
+                    "fullWidth": true,
+                    "margin": "normal",
+                    "value": ""
                 },
                 "events": {
                     "onChange": {

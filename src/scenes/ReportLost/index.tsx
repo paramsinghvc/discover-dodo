@@ -1,9 +1,8 @@
-import React, { FC, useMemo, memo } from "react";
+import React, { FC, useMemo, useCallback, memo } from "react";
 import { ReactConfigRenderer, IConfig } from "@mollycule/mason";
 import styled from "@emotion/styled";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-import DownloadLink from "core/components/GeneratePdf/generatePdf";
 
 import FORM_CONFIG from "./reportLostFormConfig.json";
 import componentsMap from "./components";
@@ -32,6 +31,12 @@ const ReportLost: FC<{}> = () => {
     [formRenderer]
   );
 
+  const handleSubmit = useCallback(() => {
+    if (formRenderer) {
+      console.warn(formRenderer.getCurrentValuesSnapshot());
+    }
+  }, [formRenderer]);
+
   return (
     <Container>
       <RenderedFormJSX />
@@ -49,12 +54,10 @@ const ReportLost: FC<{}> = () => {
           color="primary"
           size="large"
           fullWidth={false}
+          onClick={handleSubmit}
         >
           Submit
         </Button>
-      </Box>
-      <Box mr={0} textAlign="right">
-        <DownloadLink />
       </Box>
     </Container>
   );

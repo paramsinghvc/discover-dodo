@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
   GoogleMap,
-  withScriptjs,
   withGoogleMap,
   Marker,
   InfoWindow
 } from "react-google-maps";
-
 import mapStyle from "./mapStyle";
 import { foundData, lostData } from "./data";
-import { Paper } from "@material-ui/core";
+import MapInfo from "../InfoWindow";
 
 const DEFAULT_ZOOM = 12;
 
@@ -25,14 +23,6 @@ export function Map(props: any) {
     lng: 0
   });
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(getPosition);
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }, []);
-
   const getPosition = useCallback(position => {
     setCurrentLocation({
       lat: position.coords.latitude,
@@ -40,17 +30,27 @@ export function Map(props: any) {
     });
   }, []);
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(getPosition);
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, [getPosition]);
+
   return (
     <GoogleMap
       defaultZoom={DEFAULT_ZOOM}
       center={currentLocation}
-      defaultOptions={{
-        styles: mapStyle,
-        fullscreenControl: false,
-        panControl: false,
-        streetViewControl: false,
-        mapTypeControl: false
-      }}
+      defaultOptions={
+        {
+          styles: mapStyle,
+          fullscreenControl: false,
+          panControl: false,
+          streetViewControl: false,
+          mapTypeControl: false
+        } as any
+      }
     >
       {foundData.map(place => {
         return (
@@ -97,16 +97,18 @@ export function Map(props: any) {
           onCloseClick={() => {
             setSelectedPlace(null);
           }}
-          options={{
-            style: { opacity: 0.2 }
-          }}
+          options={
+            {
+              style: { opacity: 0.2 }
+            } as any
+          }
         >
-          <Paper>Pet info goes here</Paper>
+          <MapInfo />
         </InfoWindow>
       )}
     </GoogleMap>
   );
 }
 
-const MapComponent = withScriptjs(withGoogleMap(Map));
+const MapComponent = withGoogleMap(Map);
 export default MapComponent;
