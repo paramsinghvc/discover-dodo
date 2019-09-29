@@ -1,12 +1,7 @@
 import React, { useEffect } from "react";
 import { ThemeProvider } from "@material-ui/styles";
 import { createStoreContext } from "@mollycule/redux-hook";
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  Switch
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import "./App.scss";
 import AppBar from "../components/AppBar";
@@ -39,7 +34,7 @@ const App: React.FC = () => {
               <Route exact path="/" component={MapView} />
               <Route exact path="/report" component={ReportLost} />
               <Route exact path="/map" component={MapView} />
-              <Route exact path="/details" component={Details} />
+              <Route exact path="/details/:id" component={Details} />
               {/* <Route render={() => <Redirect to="/" />} /> */}
             </Switch>
           </Router>
