@@ -2,9 +2,11 @@ import React, { FC, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "@emotion/styled";
 import * as firebase from "firebase/app";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import StorageService from "shared/services/storageService";
 import { getUUID } from "shared/utils";
+import safeGet from "shared/utils/safeGet";
 
 const getColor = props => {
   if (props.isDragAccept) {
@@ -24,6 +26,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   padding: 20px;
   border-width: 3px;
   border-radius: 10px;
@@ -75,10 +78,26 @@ const ImgStyled = styled.img({
   height: "100%"
 });
 
+const ErrorText = styled.p`
+  height: 10px;
+  color: #eb3b5a;
+  font-size: 12px;
+  margin: 0;
+  margin-top: -10px;
+  text-align: left;
+`;
+
+const Spinner = styled(CircularProgress)`
+  align-self: flex-end;
+`;
+
 type FileWithPreview = File & { preview: string };
 const PhotosUploader: FC<{
   onChange: (e: Event | null, value: any[]) => void;
 }> = ({ onChange, ...props }) => {
+  const [errorText, setErrorText] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+
   const uploadFile = useCallback(
     (file: File, { onProgress, onError, onSuccess }) => {
       return new Promise((resolve, reject) => {
@@ -110,7 +129,9 @@ const PhotosUploader: FC<{
 
   const uploadFiles = useCallback(async (files: File[]) => {
     try {
+      setIsUploading(true);
       const result = await Promise.all(files.map(uploadFile));
+      setIsUploading(false);
       return {
         success: files.map((file, index) => ({
           ...file,
@@ -118,6 +139,12 @@ const PhotosUploader: FC<{
         }))
       };
     } catch (error) {
+      setIsUploading(false);
+      setErrorText(
+        safeGet(error, "code") === "storage/unauthorized"
+          ? "Upload Failed! Please login to upload"
+          : error.message
+      );
       console.error("Files upload failed", error);
       return { error };
     }
@@ -127,6 +154,9 @@ const PhotosUploader: FC<{
 
   const onDrop = useCallback(
     async acceptedFiles => {
+      if (errorText) {
+        setErrorText("");
+      }
       const filesArr: FileWithPreview[] = [
         ...files,
         ...acceptedFiles.map(file =>
@@ -141,8 +171,13 @@ const PhotosUploader: FC<{
         onChange && onChange(null, uploadedFiles);
       }
     },
-    [onChange, files]
+    [onChange, files, errorText]
   );
+
+  const onDropRejected = useCallback(() => {
+    console.error("Drop rejected");
+    setErrorText("Please drop valid image files under limit of 20 MB");
+  }, []);
 
   const {
     getRootProps,
@@ -150,7 +185,12 @@ const PhotosUploader: FC<{
     isDragActive,
     isDragAccept,
     isDragReject
-  } = useDropzone({ accept: "image/*", maxSize: 20971520, onDrop });
+  } = useDropzone({
+    accept: "image/*",
+    maxSize: 20971520,
+    onDrop,
+    onDropRejected
+  });
 
   const thumbs = files.map((file, index) => (
     <Thumb key={`${file.lastModified}-${index}`}>
@@ -169,14 +209,22 @@ const PhotosUploader: FC<{
   );
 
   return (
-    <Container {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
-      <input {...getInputProps()} />
-      {thumbs && thumbs.length === 0 ? (
-        <InstructionText>Upload Photos by drag n drop or click</InstructionText>
-      ) : (
-        <ThumbsContainer>{thumbs}</ThumbsContainer>
-      )}
-    </Container>
+    <>
+      <Container
+        {...getRootProps({ isDragActive, isDragAccept, isDragReject })}
+      >
+        <input {...getInputProps()} />
+        {thumbs && thumbs.length === 0 ? (
+          <InstructionText>
+            Upload Photos by drag n drop or click
+          </InstructionText>
+        ) : (
+          <ThumbsContainer>{thumbs}</ThumbsContainer>
+        )}
+        {isUploading && <Spinner color="secondary" size={20} />}
+      </Container>
+      <ErrorText>{errorText}</ErrorText>
+    </>
   );
 };
 
