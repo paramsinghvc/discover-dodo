@@ -59,19 +59,10 @@ export default function ButtonAppBar() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const buttonSectionRef = useRef(null);
 
-  const reactRiotRef = useRef(null);
-
   useEffect(() => {
     AuthService.onAuthStateChanged(user => {
       setLoggedInUser(user);
     });
-    if (
-      reactRiotRef &&
-      reactRiotRef.current &&
-      typeof (window as any).HACKBIT_VOTING_WIDGET !== "undefined"
-    ) {
-      (window as any).HACKBIT_VOTING_WIDGET.render(reactRiotRef.current);
-    }
   }, []);
 
   const toggleProfileMenu = useCallback(() => {
@@ -99,7 +90,6 @@ export default function ButtonAppBar() {
             <Link to={{ pathname: `/` }}>Pawsome</Link>
           </Typography>
           <Holder>
-            <div id="react-riot" ref={reactRiotRef}></div>
             <Typography variant="h6" className={classes.menus}>
               <Link to={{ pathname: `/report/lost` }}>Report Lost</Link>
             </Typography>
@@ -115,15 +105,15 @@ export default function ButtonAppBar() {
                   onClick={toggleProfileMenu}
                 />
               ) : (
-                <Button color="inherit" onClick={toggleProfileMenu}>
-                  {loggedInUser.displayName}
-                </Button>
-              )
+                  <Button color="inherit" onClick={toggleProfileMenu}>
+                    {loggedInUser.displayName}
+                  </Button>
+                )
             ) : (
-              <Button color="inherit" onClick={handleLogin}>
-                Login
+                <Button color="inherit" onClick={handleLogin}>
+                  Login
               </Button>
-            )}
+              )}
 
             <Menu
               id="menu-appbar"
