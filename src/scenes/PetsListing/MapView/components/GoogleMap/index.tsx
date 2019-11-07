@@ -69,7 +69,7 @@ export const Map: React.FC<MapProps> = props => {
             }}
             icon={{
               url: place.isLost ? "/pawprint-red.svg" : "/pawprint-green.svg",
-              scaledSize: new (window as any).google.maps.Size(30, 30)
+              scaledSize: new (window as any).google.maps.Size(100, 100)
             }}
           />
         );
