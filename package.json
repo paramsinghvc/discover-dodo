@@ -26,7 +26,7 @@
     "react-dropzone": "^10.1.9",
     "react-google-maps": "^9.4.5",
     "react-router-dom": "^5.1.1",
-    "react-scripts": "3.1.2",
+    "react-scripts": "5.0.1",
     "react-swipeable-views": "^0.13.3",
     "redux": "^4.0.4",
     "redux-saga": "^1.1.1",
@@ -65,7 +65,7 @@
     "eslint-plugin-react-hooks": "^2.1.0",
     "husky": "^3.0.6",
     "lint-staged": "^9.4.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^9.0.0",
     "prettier": "^1.18.2"
   }
 }
